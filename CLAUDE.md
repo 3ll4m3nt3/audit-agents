@@ -27,12 +27,15 @@ govcheck sections <doc_id> [--db <path>]
 # Print a document or a specific section
 govcheck show <doc_id> [--section "4.1"] [--db <path>]
 
-# Compliance check: verify child documents address parent requirements (Claude API)
+# Compliance check: verify mutable documents conform to immutable references (Claude API)
 govcheck check compliance --parent <id> --child <id> [--output <dir>] [--db <path>]
 govcheck check compliance --all [--output <dir>] [--db <path>]
+# Note: --parent is source doc (reference), --child is target doc (to check)
 
 # Definitions check: find inconsistent term definitions across the hierarchy (Claude API)
 govcheck check definitions [--output <dir>] [--db <path>]
+#   --extraction-mode / -m  glossary (default) | inline | semantic
+#   Can be repeated to combine: -m glossary -m semantic
 
 # Style check: writing quality and consistency (Claude API + regex)
 govcheck check style --doc <id> [--config <path>] [--output <dir>] [--db <path>]
@@ -65,19 +68,19 @@ hierarchy.yaml
 
 **Key modules:**
 - `govcheck/cli.py` — Click CLI: `ingest`, `tree`, `sections`, `show`, `check compliance`, `check definitions`, `check style`, `audit`
-- `govcheck/hierarchy.py` — Loads and validates the YAML hierarchy; walks nodes depth-first
+- `govcheck/hierarchy.py` — Loads and validates the YAML hierarchy; builds node map with immutability and sibling relationships
 - `govcheck/extractor.py` — Extracts text from PDF (pymupdf), DOCX (python-docx), Markdown, and plain text
 - `govcheck/section_parser.py` — Splits document text into sections by detecting heading patterns (`numbered`, `markdown`, `caps`); defaults to auto-detection
 - `govcheck/db.py` — SQLite with four tables: `documents`, `hierarchy`, `sections`, `audit_cache`
 - `govcheck/tree.py` — Builds in-memory tree from DB and renders with colored output
-- `govcheck/requirements_extractor.py` — Extracts obligation sentences ("shall", "must", "is required to") from parent documents
-- `govcheck/compliance_checker.py` — Batched Claude API calls to classify each requirement as covered / partially_covered / not_covered / contradicted
-- `govcheck/definitions_extractor.py` — Extracts defined terms from glossary sections and inline definition patterns
+- `govcheck/requirements_extractor.py` — Extracts obligation sentences ("shall", "must", "is required to") from source documents
+- `govcheck/compliance_checker.py` — Immutability-based checking: each mutable doc is checked against all immutable docs (conformance), and sibling pairs are checked for consistency (sibling_consistency). Batched Claude API calls classify each requirement as covered / partially_covered / not_covered / contradicted. `partially_covered` maps to the `review` severity in report output.
+- `govcheck/definitions_extractor.py` — Three-mode term extraction: `glossary` (centralised sections, default), `inline` (loose patterns across all sections: parentheticals, `**Term**: ...`, "hereafter referred to as", AKA aliases), `semantic` (Claude API contextual extraction). Controlled via `ExtractionMode` enum and the `mode=` parameter of `extract_definitions()`. Modes can be combined; results are merged and de-duplicated by (term_lower, section_id).
 - `govcheck/definitions_checker.py` — Semantic comparison of term definitions across the hierarchy (Claude API), plus missing/orphan definition checks (regex)
 - `govcheck/style_checker.py` — Hybrid style analysis: modal consistency, banned words, preferred terms (regex); readability and terminology consistency (Claude API)
 - `govcheck/style_config.py` — Loads `.govcheck-style.yaml`; merges with defaults
 - `govcheck/audit_cache.py` — SHA-256-keyed SQLite cache for Claude API results; avoids re-running unchanged documents
-- `govcheck/report_generator.py` — Generates HTML or Markdown consolidated audit reports
+- `govcheck/report_generator.py` — Generates HTML or Markdown consolidated audit reports. HTML reports include in-browser filter controls (severity, document, keyword) on each findings table. Severity levels: `critical`, `high`, `medium`, `low`, `review` (mapped from `partially_covered` compliance status — purple, indicates human judgement required).
 
 **Database schema:**
 - `documents` — `id`, `title`, `filename`, `doc_type`, `level`, `content`, `ingested_at`
@@ -85,7 +88,9 @@ hierarchy.yaml
 - `sections` — `section_id`, `doc_id`, `heading`, `level`, `content`, `position`
 - `audit_cache` — `cache_key`, `check_type`, `result_json`, `created_at`
 
-**hierarchy.yaml schema:** Each node has `id`, `title`, `file`, `level` (standard/policy/procedure/guideline), optional `children`, and optional `parsing_hints` (one of `numbered`, `markdown`, `caps`, `auto`). The root list is under the `hierarchy` key.
+**hierarchy.yaml schema:** Each node has `id`, `title`, `file`, `level` (standard/policy/procedure/guideline), optional `immutable` (boolean, default false), optional `children`, and optional `parsing_hints` (one of `numbered`, `markdown`, `caps`, `auto`). The root list is under the `hierarchy` key.
+
+**Immutability model:** Documents marked `immutable: true` (regulations, standards, high-level policies) are treated as reference sources that others must conform to. Documents marked `immutable: false` (your own policies and procedures) are checked for conformance to immutable docs, and sibling pairs are checked against each other for consistency.
 
 **Section parsing hints:**
 - `numbered` — detects headings like `4.1 Introduction` or `A.2.3 Scope`; nesting level derived from dot-count
@@ -105,16 +110,19 @@ hierarchy:
     title: "ISO 27001:2022"
     file: "iso27001.pdf"
     level: "standard"
+    immutable: true              # Reference standard; others must conform
     parsing_hints: "numbered"
     children:
       - id: infosec-policy
         title: "Company InfoSec Policy"
         file: "infosec-policy.docx"
         level: "policy"
+        immutable: false          # Can change to stay consistent
         parsing_hints: "markdown"
         children:
           - id: access-control-proc
             title: "Access Control Procedure"
             file: "access-control.docx"
             level: "procedure"
+            immutable: false
 ```

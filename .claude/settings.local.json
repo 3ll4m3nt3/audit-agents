@@ -16,7 +16,8 @@
       "Bash(/mnt/c/Code/governance/.venv/Scripts/python.exe -m govcheck.cli check definitions -o /mnt/c/Code/governance/report.json)",
       "Bash(/mnt/c/Code/governance/.venv/Scripts/python.exe:*)",
       "Bash(govcheck check:*)",
-      "Bash(grep -E \"\\\\.\\(py|md|txt|yaml|yml|toml|cfg\\)$\")"
+      "Bash(grep -E \"\\\\.\\(py|md|txt|yaml|yml|toml|cfg\\)$\")",
+      "Bash(ls -la *.yaml *.yml)"
     ]
   }
 }

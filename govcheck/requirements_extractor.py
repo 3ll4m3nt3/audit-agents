@@ -15,14 +15,34 @@ class Requirement:
     position: int   # sequential position within the document
 
 
-# Matches obligation keywords that signal a normative requirement
+# Matches obligation keywords that signal a normative requirement.
+# Covers normative (shall/must) and recommended (should/will) modals
+# used across ISO, GDPR, NIST, DAMA, and general policy frameworks.
 _REQUIREMENT_RE = re.compile(
-    r'\b(shall(?:\s+not)?|must(?:\s+not)?|(?:is|are)\s+required\s+to)\b',
+    r'\b('
+    r'shall(?:\s+not)?'
+    r'|must(?:\s+not)?'
+    r'|should(?:\s+not)?'
+    r'|will(?:\s+not)?'
+    r'|(?:is|are)\s+required\s+to'
+    r'|(?:is|are)\s+prohibited\s+from'
+    r')\b',
     re.IGNORECASE,
 )
 
-# ISO-style control identifiers at the start of a line, e.g. "A.5.1", "8.2.3"
-_CONTROL_PREFIX_RE = re.compile(r'^[A-Z]?\d+(?:\.\d+){1,3}\s+')
+# Control/article identifiers at the start of a line. Supports:
+#   ISO:   A.5.1, 8.2.3
+#   GDPR:  Article 5, Article 5(1)(a), Recital 39
+#   NIST:  AC-1, AU-2, PM-31
+#   DAMA / custom frameworks: DG-01, DM-12, Chapter 3, Section 4, Clause 6, Annex A
+_CONTROL_PREFIX_RE = re.compile(
+    r'^(?:'
+    r'[A-Z]?\d+(?:\.\d+){1,3}'                             # ISO: A.5.1 / 8.2.3
+    r'|(?:Article|Recital|Section|Chapter|Clause|Annex)\s+\d+(?:\(\w+\))*'  # GDPR/legal
+    r'|[A-Z]{2,6}-\d+'                                      # NIST/alphanumeric: AC-1, DG-01
+    r')\s+',
+    re.IGNORECASE,
+)
 
 
 def extract_requirements(
@@ -84,9 +104,11 @@ def extract_requirements(
 
 def _is_control_statement(sentence: str) -> bool:
     """
-    Return True for lines that look like ISO control statements:
-    e.g. "A.5.1 Policies for information security" with significant content.
-    These are short declarative headings that represent a control requirement.
+    Return True for lines that look like a framework control or article heading
+    with significant content (not a bare section title).
+
+    Matches ISO (A.5.1), GDPR (Article 5(1)(a)), NIST (AC-1), DAMA (DG-01),
+    and legal/policy structures (Chapter 3, Clause 6, Annex A).
     """
     return bool(
         _CONTROL_PREFIX_RE.match(sentence)

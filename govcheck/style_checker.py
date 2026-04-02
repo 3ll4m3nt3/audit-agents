@@ -18,13 +18,25 @@ import re
 import textwrap
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Callable, Optional
 
 import anthropic
 
 from .audit_cache import compute_hash, get_cached, store_cached
 from .db import get_all_documents, get_hierarchy, get_sections
+from .hierarchy import load_hierarchy, build_node_map, get_immutable_docs
 from .style_config import StyleConfig
+
+
+def _get_immutable_ids() -> set[str]:
+    """Return the set of immutable document IDs from hierarchy.yaml, or empty set on failure."""
+    try:
+        nodes_list = load_hierarchy(Path.cwd() / "hierarchy.yaml")
+        node_map = build_node_map(nodes_list)
+        return set(get_immutable_docs(node_map))
+    except Exception:
+        return set()
 
 MODEL = "claude-sonnet-4-20250514"
 READABILITY_BATCH = 5    # sections per Claude readability call
@@ -627,6 +639,10 @@ def run_check(
     if doc_id not in all_docs:
         raise ValueError(f"Document '{doc_id}' not found in the database.")
 
+    if doc_id in _get_immutable_ids():
+        doc = all_docs[doc_id]
+        return _build_report([], [{"id": doc_id, "title": doc["title"]}], config)
+
     all_hierarchy = list(get_hierarchy(conn))
     client = anthropic.Anthropic()
 
@@ -640,15 +656,22 @@ def run_check_all(
     config: StyleConfig,
     progress: Optional[Callable[[str], None]] = None,
 ) -> dict:
-    """Run style checks for every document in the hierarchy."""
+    """Run style checks for every mutable document in the hierarchy."""
     all_docs = {row["id"]: dict(row) for row in get_all_documents(conn)}
     all_hierarchy = list(get_hierarchy(conn))
     client = anthropic.Anthropic()
+    immutable_ids = _get_immutable_ids()
 
     all_findings: list[StyleFinding] = []
-    docs_checked = [{"id": doc_id, "title": doc["title"]} for doc_id, doc in all_docs.items()]
+    docs_checked = [
+        {"id": doc_id, "title": doc["title"]}
+        for doc_id, doc in all_docs.items()
+        if doc_id not in immutable_ids
+    ]
 
     for doc_id in all_docs:
+        if doc_id in immutable_ids:
+            continue
         all_findings.extend(
             _check_document(doc_id, all_docs, all_hierarchy, conn, client, config, progress=progress)
         )

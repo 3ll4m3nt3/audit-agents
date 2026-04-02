@@ -12,12 +12,13 @@ from typing import Optional
 # Severity helpers
 # ---------------------------------------------------------------------------
 
-SEVERITY_ORDER: dict[str, int] = {"critical": 4, "high": 3, "medium": 2, "low": 1}
+SEVERITY_ORDER: dict[str, int] = {"critical": 4, "high": 3, "medium": 2, "low": 1, "review": 1}
 
 _STATUS_TO_SEVERITY: dict[str, str] = {
     "contradicted": "critical",
+    "no_policy": "critical",      # structural gap — no policy exists for this topic
     "not_covered": "high",
-    "partially_covered": "medium",
+    "partially_covered": "review",
 }
 
 _SEV_COLORS: dict[str, str] = {
@@ -25,6 +26,7 @@ _SEV_COLORS: dict[str, str] = {
     "high": "#c2410c",
     "medium": "#a16207",
     "low": "#1d4ed8",
+    "review": "#7c3aed",
 }
 
 _SEV_BG: dict[str, str] = {
@@ -32,6 +34,7 @@ _SEV_BG: dict[str, str] = {
     "high": "#ffedd5",
     "medium": "#fef9c3",
     "low": "#dbeafe",
+    "review": "#f3e8ff",
 }
 
 _LEVEL_COLORS: dict[str, str] = {
@@ -68,19 +71,27 @@ def _normalise_findings(
     for f in compliance_report.get("findings", []):
         sev = _compliance_severity(f.get("status", ""))
         if sev and _passes_filter(sev, severity_filter):
+            gap_type = f.get("gap_type", "")
             out.append({
                 "agent": "compliance",
                 "severity": sev,
-                "doc_id": f.get("child_doc_id", ""),
-                "doc_title": f.get("child_doc_title", ""),
+                "doc_id": f.get("target_doc_id", ""),
+                "doc_title": f.get("target_doc_title", ""),
+                "source": f.get("source_doc_title", "") or f.get("source_doc_id", ""),
                 "section": f.get("requirement_section", ""),
                 "summary": f.get("requirement_text", "")[:150],
                 "explanation": f.get("explanation", ""),
                 "extra": {
-                    "parent": f.get("parent_doc_title", ""),
+                    "parent": f.get("source_doc_title", ""),
                     "status": f.get("status", ""),
                     "evidence": f.get("evidence", ""),
                     "evidence_sections": f.get("evidence_sections", []),
+                    "gap_type": gap_type,
+                    "gap_label": (
+                        "No relevant policy" if gap_type == "no_relevant_policy"
+                        else "Not covered by relevant policy" if gap_type == "not_covered_by_relevant_policy"
+                        else ""
+                    ),
                 },
             })
 
@@ -93,6 +104,7 @@ def _normalise_findings(
                 "severity": sev,
                 "doc_id": f.get("child_doc_id", ""),
                 "doc_title": f.get("child_doc_title", ""),
+                "source": f.get("parent_doc_title", "") or f.get("child_doc_title", "") or f.get("child_doc_id", ""),
                 "section": cdef.get("section", ""),
                 "summary": f"Term: «{f.get('term', '')}» — {f.get('finding_type', '')}",
                 "explanation": f.get("explanation", ""),
@@ -113,6 +125,7 @@ def _normalise_findings(
                 "severity": sev,
                 "doc_id": f.get("doc_id", ""),
                 "doc_title": f.get("doc_title", ""),
+                "source": f.get("doc_title", "") or f.get("doc_id", ""),
                 "section": f.get("section_heading") or "",
                 "summary": f.get("message", ""),
                 "explanation": f.get("sentence") or "",
@@ -219,6 +232,7 @@ h3 { font-size: 15px; font-weight: 600; color: #374151; margin: 20px 0 10px; }
 .card.high     { background:#ffedd5; border-color:#fdba74; color:#7c2d12; }
 .card.medium   { background:#fef9c3; border-color:#fde047; color:#713f12; }
 .card.low      { background:#dbeafe; border-color:#93c5fd; color:#1e3a8a; }
+.card.review   { background:#f3e8ff; border-color:#c084fc; color:#581c87; }
 .card.ok       { background:#dcfce7; border-color:#86efac; color:#14532d; }
 
 /* Badge */
@@ -228,6 +242,7 @@ h3 { font-size: 15px; font-weight: 600; color: #374151; margin: 20px 0 10px; }
 .badge.high     { background:#ffedd5; color:#c2410c; }
 .badge.medium   { background:#fef9c3; color:#a16207; }
 .badge.low      { background:#dbeafe; color:#1d4ed8; }
+.badge.review   { background:#f3e8ff; color:#7c3aed; }
 .badge.compliance  { background:#ede9fe; color:#5b21b6; }
 .badge.definitions { background:#e0f2fe; color:#0369a1; }
 .badge.style       { background:#f0fdf4; color:#15803d; }
@@ -269,6 +284,40 @@ h3 { font-size: 15px; font-weight: 600; color: #374151; margin: 20px 0 10px; }
 .finding-dot.high     { background:#ffedd5; color:#c2410c; }
 .finding-dot.medium   { background:#fef9c3; color:#a16207; }
 .finding-dot.low      { background:#dbeafe; color:#1d4ed8; }
+.finding-dot.review   { background:#f3e8ff; color:#7c3aed; }
+
+/* Filter bar */
+.filter-bar { display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;
+              align-items:center; padding:10px 12px; background:#f8fafc;
+              border:1px solid #e5e7eb; border-radius:6px; }
+.filter-bar label { font-size:12px; font-weight:600; color:#6b7280; white-space:nowrap; }
+.filter-bar select, .filter-bar input {
+  padding:4px 8px; border:1px solid #d1d5db; border-radius:4px;
+  font-size:12px; color:#374151; background:#fff; }
+.filter-bar input { width:200px; }
+.filter-bar .filter-count { font-size:12px; color:#9ca3af; margin-left:auto; }
+
+/* Page tabs */
+.tab-bar { display:flex; gap:0; border-bottom:2px solid #e5e7eb; margin-bottom:28px; flex-wrap:wrap; }
+.tab-btn { padding:10px 22px; font-size:13px; font-weight:600; color:#6b7280;
+           background:none; border:none; border-bottom:3px solid transparent;
+           cursor:pointer; margin-bottom:-2px; transition:color .15s, border-color .15s; }
+.tab-btn:hover { color:#1f2937; }
+.tab-btn.active { color:#2563eb; border-bottom-color:#2563eb; }
+.tab-page { display:none; }
+.tab-page.active { display:block; }
+
+/* By-severity grouped view */
+.sev-group { margin-bottom: 28px; }
+.sev-group-header { display:flex; align-items:center; gap:10px; margin-bottom:10px;
+                    padding:8px 12px; border-radius:6px; border-left:4px solid; }
+.sev-group-header.critical { background:#fee2e2; border-color:#b91c1c; }
+.sev-group-header.high     { background:#ffedd5; border-color:#c2410c; }
+.sev-group-header.medium   { background:#fef9c3; border-color:#a16207; }
+.sev-group-header.low      { background:#dbeafe; border-color:#1d4ed8; }
+.sev-group-header.review   { background:#f3e8ff; border-color:#7c3aed; }
+.sev-group-header h3 { margin:0; padding:0; border:none; font-size:14px; font-weight:700; }
+.sev-group-header .sev-count { font-size:13px; font-weight:600; opacity:.75; }
 
 /* Per-doc table */
 .perdoc-table { width:100%; border-collapse:collapse; font-size:13px; }
@@ -322,9 +371,36 @@ def _render_tree_html(nodes: list[dict]) -> str:
     return '<ul class="hier-tree">\n' + "".join(_li(n) for n in nodes) + "</ul>"
 
 
-def _findings_table_html(findings: list[dict]) -> str:
+def _findings_table_html(findings: list[dict], table_id: str = "findings-table") -> str:
     if not findings:
         return "<p class='empty'>No findings at this severity level.</p>"
+
+    # Collect unique severity and doc values for filter dropdowns
+    severities = sorted({f["severity"] for f in findings},
+                        key=lambda s: -SEVERITY_ORDER.get(s, 0))
+    docs = sorted({f["doc_title"] or f["doc_id"] for f in findings})
+
+    sev_options = "<option value=''>All severities</option>" + "".join(
+        f'<option value="{_e(s)}">{_e(s.capitalize())}</option>' for s in severities
+    )
+    doc_options = "<option value=''>All documents</option>" + "".join(
+        f'<option value="{_e(d)}">{_e(d)}</option>' for d in docs
+    )
+
+    filter_bar = (
+        f'<div class="filter-bar" id="{table_id}-filters">'
+        f'<label>Severity</label>'
+        f'<select onchange="filterTable(\'{table_id}\')" id="{table_id}-sev">'
+        f'{sev_options}</select>'
+        f'<label>Document</label>'
+        f'<select onchange="filterTable(\'{table_id}\')" id="{table_id}-doc">'
+        f'{doc_options}</select>'
+        f'<label>Search</label>'
+        f'<input type="text" placeholder="Filter by keyword…" '
+        f'oninput="filterTable(\'{table_id}\')" id="{table_id}-search">'
+        f'<span class="filter-count" id="{table_id}-count">{len(findings)} rows</span>'
+        f'</div>'
+    )
 
     rows = []
     for f in findings:
@@ -338,8 +414,10 @@ def _findings_table_html(findings: list[dict]) -> str:
         extra = f.get("extra", {})
         detail_parts = []
         if agent == "compliance":
+            if extra.get("gap_label"):
+                detail_parts.append(f"<small><strong>Gap type:</strong> {_e(extra['gap_label'])}</small>")
             if extra.get("parent"):
-                detail_parts.append(f"<small>Parent: {_e(extra['parent'])}</small>")
+                detail_parts.append(f"<small>Reference: {_e(extra['parent'])}</small>")
             if extra.get("evidence"):
                 detail_parts.append(f"<small>Evidence: {_e(extra['evidence'][:100])}</small>")
             ev_secs = extra.get("evidence_sections", [])
@@ -361,11 +439,17 @@ def _findings_table_html(findings: list[dict]) -> str:
                 detail_parts.append(f"<small>Type: {_e(extra['finding_type'])}</small>")
 
         detail_html = "<br>".join(detail_parts)
+        # data attributes for JS filtering (lowercase, safe for attribute values)
+        source = _e(f.get("source", ""))
+        data_sev = _e(sev)
+        data_doc = _e(f["doc_title"] or f["doc_id"])
+        data_text = _e(f"{f['summary']} {f['explanation']} {f['section']} {f.get('source', '')}".lower())
         rows.append(
-            f"<tr>"
+            f'<tr data-sev="{data_sev}" data-doc="{data_doc}" data-text="{data_text}">'
             f"<td>{_sev_badge(sev)}</td>"
             f"<td>{_agent_badge(agent)}</td>"
             f"<td>{doc}</td>"
+            f"<td>{source}</td>"
             f"<td class='monospace'>{section}</td>"
             f"<td class='summary'>{summary}</td>"
             f"<td class='explanation'>{explanation}</td>"
@@ -376,11 +460,12 @@ def _findings_table_html(findings: list[dict]) -> str:
     header = (
         "<tr>"
         "<th>Severity</th><th>Agent</th><th>Document</th>"
-        "<th>Section</th><th>Summary</th><th>Detail</th><th>References</th>"
+        "<th>Source</th><th>Section</th><th>Summary</th><th>Detail</th><th>References</th>"
         "</tr>"
     )
     return (
-        '<table class="findings-table">'
+        filter_bar
+        + f'<table class="findings-table" id="{table_id}">'
         + header
         + "".join(rows)
         + "</table>"
@@ -398,7 +483,7 @@ def _per_doc_table_html(
             counts[did] = {
                 "title": f["doc_title"] or did,
                 "compliance": 0, "definitions": 0, "style": 0,
-                "critical": 0, "high": 0, "medium": 0, "low": 0,
+                "critical": 0, "high": 0, "medium": 0, "low": 0, "review": 0,
             }
         counts[did][f["agent"]] += 1
         counts[did][f["severity"]] = counts[did].get(f["severity"], 0) + 1
@@ -408,7 +493,7 @@ def _per_doc_table_html(
 
     rows = []
     for did, c in sorted(counts.items(), key=lambda x: -sum(
-        x[1].get(s, 0) for s in SEVERITY_ORDER
+        x[1].get(s, 0) * SEVERITY_ORDER.get(s, 0) for s in SEVERITY_ORDER
     )):
         total = c["compliance"] + c["definitions"] + c["style"]
         rows.append(
@@ -427,6 +512,9 @@ def _per_doc_table_html(
             f"<td class='num'>"
             + (f'<span class="badge low">{c["low"]}</span>' if c["low"] else "—")
             + "</td>"
+            f"<td class='num'>"
+            + (f'<span class="badge review">{c["review"]}</span>' if c.get("review") else "—")
+            + "</td>"
             f"<td class='num'>{c['compliance'] or '—'}</td>"
             f"<td class='num'>{c['definitions'] or '—'}</td>"
             f"<td class='num'>{c['style'] or '—'}</td>"
@@ -437,12 +525,70 @@ def _per_doc_table_html(
         "<tr><th>Document</th><th class='num'>Total</th>"
         "<th class='num'>Critical</th><th class='num'>High</th>"
         "<th class='num'>Medium</th><th class='num'>Low</th>"
+        "<th class='num'>Review</th>"
         "<th class='num'>Compliance</th><th class='num'>Definitions</th>"
         "<th class='num'>Style</th></tr>"
     )
     return (
         '<table class="perdoc-table">' + header + "".join(rows) + "</table>"
     )
+
+
+def _severity_view_html(findings: list[dict]) -> str:
+    """Render all findings grouped by severity level."""
+    if not findings:
+        return "<p class='empty'>No findings.</p>"
+
+    SEV_LABELS = {
+        "critical": "Critical",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low",
+        "review": "Review (human judgement required)",
+    }
+    html_parts = []
+    for sev in ("critical", "high", "medium", "low", "review"):
+        group = [f for f in findings if f["severity"] == sev]
+        if not group:
+            continue
+        label = SEV_LABELS.get(sev, sev.capitalize())
+        table_id = f"tbl-sev-{sev}"
+        header = (
+            f'<div class="sev-group">'
+            f'<div class="sev-group-header {_e(sev)}">'
+            f'<h3>{_sev_badge(sev)} {_e(label)}</h3>'
+            f'<span class="sev-count">{len(group)} finding{"s" if len(group) != 1 else ""}</span>'
+            f'</div>'
+        )
+        html_parts.append(header + _findings_table_html(group, table_id=table_id) + "</div>")
+
+    return "\n".join(html_parts)
+
+
+def _findings_by_doc_html(findings: list[dict]) -> str:
+    """Render findings grouped by document."""
+    if not findings:
+        return "<p class='empty'>No findings.</p>"
+
+    by_doc: dict[str, list[dict]] = {}
+    for f in findings:
+        key = f["doc_title"] or f["doc_id"]
+        by_doc.setdefault(key, []).append(f)
+
+    # Sort documents by worst severity then count
+    def _doc_sort_key(item: tuple) -> tuple:
+        fs = item[1]
+        worst = max((SEVERITY_ORDER.get(f["severity"], 0) for f in fs), default=0)
+        return (-worst, -len(fs))
+
+    html_parts = []
+    for doc_title, doc_findings in sorted(by_doc.items(), key=_doc_sort_key):
+        table_id = f"tbl-doc-{_e(doc_title).replace(' ', '-').replace('/', '-')[:40]}"
+        html_parts.append(
+            f"<h3>{_e(doc_title)}</h3>"
+            + _findings_table_html(doc_findings, table_id=table_id)
+        )
+    return "\n".join(html_parts)
 
 
 def generate_html_report(
@@ -480,12 +626,13 @@ def generate_html_report(
 
     # Summary cards
     cards_html = '<div class="cards">'
-    for sev in ("critical", "high", "medium", "low"):
+    for sev in ("critical", "high", "medium", "low", "review"):
         cnt = sev_counts.get(sev, 0)
+        label = "human review" if sev == "review" else sev
         cards_html += (
             f'<div class="card {sev}">'
             f'<div class="count">{cnt}</div>'
-            f'<div class="label">{sev}</div>'
+            f'<div class="label">{label}</div>'
             f'</div>'
         )
     cards_html += (
@@ -508,7 +655,7 @@ def generate_html_report(
                 f"<td class='num'>"
                 + (f'<span class="badge {sev}">{s.get(sev, 0)}</span>' if s.get(sev, 0) else "—")
                 + "</td>"
-                for sev in ("critical", "high", "medium", "low")
+                for sev in ("critical", "high", "medium", "low", "review")
             )
             + ("  <td><small style='color:#16a34a'>cached</small></td>" if cached_flags.get(agent) else "<td></td>")
             + "</tr>"
@@ -518,6 +665,7 @@ def generate_html_report(
         "<tr><th>Agent</th><th class='num'>Total</th>"
         "<th class='num'>Critical</th><th class='num'>High</th>"
         "<th class='num'>Medium</th><th class='num'>Low</th>"
+        "<th class='num'>Review</th>"
         "<th>Cache</th></tr>"
         + agent_rows
         + "</table>"
@@ -533,7 +681,7 @@ def generate_html_report(
         return (
             f'<section id="{section_id}">'
             f"<h2>{title}</h2>"
-            + _findings_table_html(af)
+            + _findings_table_html(af, table_id=f"tbl-{section_id}")
             + "</section>"
         )
 
@@ -542,6 +690,7 @@ def generate_html_report(
     style_sec = _agent_section("style", "style", "Style Findings")
 
     per_doc_html = _per_doc_table_html(findings, docs)
+    severity_html = _severity_view_html(findings)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -550,42 +699,95 @@ def generate_html_report(
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Governance Audit Report</title>
 <style>{_CSS}</style>
+<script>
+function filterTable(tableId) {{
+  var sev    = document.getElementById(tableId + '-sev').value.toLowerCase();
+  var doc    = document.getElementById(tableId + '-doc').value.toLowerCase();
+  var search = document.getElementById(tableId + '-search').value.toLowerCase();
+  var table  = document.getElementById(tableId);
+  var rows   = table ? table.querySelectorAll('tr[data-sev]') : [];
+  var visible = 0;
+  rows.forEach(function(row) {{
+    var matchSev  = !sev    || row.dataset.sev === sev;
+    var matchDoc  = !doc    || row.dataset.doc === doc;
+    var matchText = !search || row.dataset.text.indexOf(search) !== -1;
+    var show = matchSev && matchDoc && matchText;
+    row.style.display = show ? '' : 'none';
+    if (show) visible++;
+  }});
+  var countEl = document.getElementById(tableId + '-count');
+  if (countEl) countEl.textContent = visible + ' row' + (visible !== 1 ? 's' : '');
+}}
+function showTab(tabId) {{
+  document.querySelectorAll('.tab-page').forEach(function(p) {{ p.classList.remove('active'); }});
+  document.querySelectorAll('.tab-btn').forEach(function(b) {{ b.classList.remove('active'); }});
+  document.getElementById('page-' + tabId).classList.add('active');
+  document.getElementById('btn-' + tabId).classList.add('active');
+  history.replaceState(null, '', '#' + tabId);
+}}
+window.addEventListener('DOMContentLoaded', function() {{
+  var hash = location.hash.replace('#', '');
+  var valid = ['summary', 'by-type', 'by-severity', 'by-document'];
+  showTab(valid.includes(hash) ? hash : 'summary');
+}});
+</script>
 </head>
 <body>
 <nav>
   <span class="brand">govcheck audit</span>
-  <a href="#summary">Summary</a>
-  <a href="#hierarchy">Hierarchy</a>
-  <a href="#compliance">Compliance</a>
-  <a href="#definitions">Definitions</a>
-  <a href="#style">Style</a>
-  <a href="#per-document">By Document</a>
+  <span style="color:#64748b;font-size:12px">Generated: {_e(generated_at)}</span>
 </nav>
 <main>
-  <section id="summary">
-    <h2>Executive Summary{filter_note}</h2>
-    <p style="color:#6b7280;margin-bottom:16px">Generated: {_e(generated_at)}</p>
-    {cards_html}
-    <h3>Findings by Agent</h3>
-    {agent_table}
-  </section>
+  <div class="tab-bar">
+    <button class="tab-btn" id="btn-summary"      onclick="showTab('summary')">Summary</button>
+    <button class="tab-btn" id="btn-by-type"      onclick="showTab('by-type')">By Finding Type</button>
+    <button class="tab-btn" id="btn-by-severity"  onclick="showTab('by-severity')">By Severity</button>
+    <button class="tab-btn" id="btn-by-document"  onclick="showTab('by-document')">By Document</button>
+  </div>
 
-  <section id="hierarchy">
-    <h2>Document Hierarchy</h2>
-    <p style="color:#6b7280;margin-bottom:12px;font-size:12px">
-      Coloured dot = worst-severity issue &nbsp;&#9679;&nbsp; number = finding count
-    </p>
-    {tree_html}
-  </section>
+  <!-- PAGE: Summary -->
+  <div class="tab-page" id="page-summary">
+    <section>
+      <h2>Executive Summary{filter_note}</h2>
+      {cards_html}
+      <h3>Findings by Agent</h3>
+      {agent_table}
+    </section>
+    <section>
+      <h2>Document Hierarchy</h2>
+      <p style="color:#6b7280;margin-bottom:12px;font-size:12px">
+        Coloured dot = worst-severity issue &nbsp;&#9679;&nbsp; number = finding count
+      </p>
+      {tree_html}
+    </section>
+  </div>
 
-  {compliance_sec}
-  {definitions_sec}
-  {style_sec}
+  <!-- PAGE: By Finding Type -->
+  <div class="tab-page" id="page-by-type">
+    {compliance_sec}
+    {definitions_sec}
+    {style_sec}
+  </div>
 
-  <section id="per-document">
-    <h2>Per-Document Breakdown</h2>
-    {per_doc_html}
-  </section>
+  <!-- PAGE: By Severity -->
+  <div class="tab-page" id="page-by-severity">
+    <section>
+      <h2>Findings by Severity</h2>
+      {severity_html}
+    </section>
+  </div>
+
+  <!-- PAGE: By Document -->
+  <div class="tab-page" id="page-by-document">
+    <section>
+      <h2>Per-Document Breakdown</h2>
+      {per_doc_html}
+    </section>
+    <section>
+      <h2>All Findings by Document</h2>
+      {_findings_by_doc_html(findings)}
+    </section>
+  </div>
 </main>
 </body>
 </html>"""
@@ -695,12 +897,13 @@ def generate_markdown_report(
             continue
 
         lines += [
-            "| Severity | Document | Section | Summary | Detail |",
-            "|----------|----------|---------|---------|--------|",
+            "| Severity | Document | Source | Section | Summary | Detail |",
+            "|----------|----------|--------|---------|---------|--------|",
         ]
         for f in af:
             sev = f["severity"]
             doc = (f["doc_title"] or f["doc_id"]).replace("|", "\\|")
+            source = (f.get("source", "") or "").replace("|", "\\|")
             section = (f["section"] or "").replace("|", "\\|")
             summary = f["summary"][:100].replace("|", "\\|").replace("\n", " ")
             extra = f.get("extra", {})
@@ -712,7 +915,7 @@ def generate_markdown_report(
             elif agent == "style":
                 detail = f"type: {extra.get('finding_type','')}"
             detail = detail.replace("|", "\\|")
-            lines.append(f"| **{sev}** | {doc} | {section} | {summary} | {detail} |")
+            lines.append(f"| **{sev}** | {doc} | {source} | {section} | {summary} | {detail} |")
 
     # Per-document breakdown
     lines += ["", "---", "", "## Per-Document Breakdown", ""]

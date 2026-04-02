@@ -62,6 +62,12 @@ def _report_to_markdown(report: dict) -> str:
         for status in ("covered", "partially_covered", "not_covered", "contradicted"):
             count = by_status.get(status, 0)
             lines.append(f"- **{status}:** {count}")
+        
+        by_check_type = summary.get("by_check_type", {})
+        if by_check_type:
+            lines.append("\n### By Check Type\n")
+            for ctype, count in sorted(by_check_type.items()):
+                lines.append(f"- **{ctype}:** {count}")
 
         findings = report.get("findings", [])
         if findings:
@@ -70,12 +76,14 @@ def _report_to_markdown(report: dict) -> str:
                 status = f.get("status", "")
                 req = f.get("requirement_text", "")
                 section = f.get("requirement_section", "")
-                parent = f.get("parent_doc_title", f.get("parent_doc_id", ""))
-                child = f.get("child_doc_title", f.get("child_doc_id", ""))
+                source = f.get("source_doc_title", f.get("source_doc_id", ""))
+                target = f.get("target_doc_title", f.get("target_doc_id", ""))
+                check_kind = f.get("check_type", "conformance")
                 explanation = f.get("explanation", "")
                 evidence = f.get("evidence", "")
+                arrow = "->" if check_kind == "conformance" else "<->"
                 lines.append(f"### {section} — {status}")
-                lines.append(f"\n**Requirement ({parent} → {child}):** {req}\n")
+                lines.append(f"\n**Requirement ({source} {arrow} {target}):** {req}\n")
                 if explanation:
                     lines.append(f"**Explanation:** {explanation}\n")
                 if evidence:
@@ -343,16 +351,16 @@ def check_group():
 
 
 @check_group.command("compliance")
-@click.option("--parent", "parent_id", default=None, help="Parent document ID.")
-@click.option("--child", "child_id", default=None, help="Child document ID.")
+@click.option("--parent", "parent_id", default=None, help="Source document ID (immutable doc or reference).")
+@click.option("--child", "child_id", default=None, help="Target document ID (document to check).")
 @click.option("--all", "check_all", is_flag=True, default=False,
-              help="Check every parent-child pair in the hierarchy.")
+              help="Check all mutable documents against immutable docs and siblings for consistency.")
 @click.option("--output", "-o", default="reports", show_default=True,
               help="Base directory for output; a timestamped subfolder is created inside.")
 @_db_option()
 def check_compliance(parent_id: str | None, child_id: str | None, check_all: bool,
                      output: str, db: str):
-    """Check whether child documents adequately address parent document requirements."""
+    """Check whether documents conform to immutable references and maintain sibling consistency."""
     from .compliance_checker import run_check_all, run_check_pair
 
     db_path = Path(db)
@@ -382,7 +390,7 @@ def check_compliance(parent_id: str | None, child_id: str | None, check_all: boo
         if check_all:
             report = run_check_all(conn, progress=_progress)
         else:
-            report = run_check_pair(conn, parent_id, child_id, progress=_progress)
+            report = run_check_pair(conn, parent_id, child_id, check_type="conformance", progress=_progress)
     except Exception as e:
         click.echo(f"Error during compliance check: {e}", err=True)
         conn.close()
@@ -491,10 +499,27 @@ def check_style(doc_id: str | None, check_all: bool, output: str,
 @check_group.command("definitions")
 @click.option("--output", "-o", default="reports", show_default=True,
               help="Base directory for output; a timestamped subfolder is created inside.")
+@click.option(
+    "--extraction-mode", "-m",
+    "extraction_mode",
+    multiple=True,
+    type=click.Choice(["glossary", "inline", "semantic"], case_sensitive=False),
+    default=["glossary"],
+    show_default=True,
+    help=(
+        "Term extraction strategy. glossary=centralised glossary sections (default), "
+        "inline=loose patterns across all sections, "
+        "semantic=Claude API contextual extraction. "
+        "Can be repeated to combine modes, e.g. -m glossary -m inline."
+    ),
+)
 @_db_option()
-def check_definitions(output: str, db: str):
+def check_definitions(output: str, extraction_mode: tuple, db: str):
     """Check definition consistency across the document hierarchy using the Claude API."""
     from .definitions_checker import run_check
+    from .definitions_extractor import ExtractionMode
+
+    modes = [ExtractionMode(m) for m in extraction_mode]
 
     db_path = Path(db)
     if not db_path.exists():
@@ -504,9 +529,10 @@ def check_definitions(output: str, db: str):
     conn = get_connection(db_path)
     init_db(conn)
 
-    click.echo("Extracting definitions and running semantic comparison via Claude API ...")
+    mode_label = " + ".join(m.value for m in modes)
+    click.echo(f"Extracting definitions [{mode_label}] and running semantic comparison via Claude API ...")
     try:
-        report = run_check(conn)
+        report = run_check(conn, mode=modes)
     except Exception as e:
         click.echo(f"Error during check: {e}", err=True)
         conn.close()
@@ -519,6 +545,7 @@ def check_definitions(output: str, db: str):
     summary = report.get("summary", {})
     total = summary.get("total_findings", 0)
     click.echo(f"Done. {total} finding(s) written to {folder}.")
+
 
     by_type = summary.get("by_type", {})
     if by_type:

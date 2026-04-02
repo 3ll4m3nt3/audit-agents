@@ -2,7 +2,7 @@
 Compare definitions across the governance document hierarchy.
 
 Uses the Claude API (batched) for semantic comparison of definition pairs.
-Text-based heuristics are used for structural checks (missing / orphan).
+Text-based heuristics are used for structural checks (usage violations).
 """
 
 import json
@@ -10,16 +10,28 @@ import re
 import textwrap
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Optional
 
 import anthropic
 
 from .audit_cache import compute_hash, get_cached, store_cached
 from .db import get_all_documents, get_hierarchy, get_sections
-from .definitions_extractor import Definition, extract_definitions
+from .definitions_extractor import Definition, ExtractionMode, extract_definitions
+from .hierarchy import load_hierarchy, build_node_map, get_immutable_docs
+
+
+def _get_immutable_ids() -> set[str]:
+    """Return the set of immutable document IDs from hierarchy.yaml, or empty set on failure."""
+    try:
+        nodes_list = load_hierarchy(Path.cwd() / "hierarchy.yaml")
+        node_map = build_node_map(nodes_list)
+        return set(get_immutable_docs(node_map))
+    except Exception:
+        return set()
 
 MODEL = "claude-sonnet-4-20250514"
-BATCH_SIZE = 20   # definition pairs per API call
+BATCH_SIZE = 20    # definition pairs per API call
 
 
 # ---------------------------------------------------------------------------
@@ -28,7 +40,7 @@ BATCH_SIZE = 20   # definition pairs per API call
 
 @dataclass
 class Finding:
-    finding_type: str           # contradiction | narrowing | missing_definition | orphan_definition
+    finding_type: str           # contradiction | narrowing | usage_violation
     severity: str               # high | medium | low
     term: str
     child_doc_id: str
@@ -155,85 +167,179 @@ def _def_to_dict(d: Definition) -> dict:
     }
 
 
-def _find_missing_definitions(
+def _extract_usage_sentences(content: str, term: str, max_sentences: int = 5) -> list[str]:
+    """Return up to max_sentences sentences from content that contain the term."""
+    term_lower = term.lower()
+    # Split on sentence-ending punctuation followed by whitespace
+    sentences = re.split(r'(?<=[.!?])\s+', content)
+    result = []
+    for s in sentences:
+        s = s.strip()
+        if s and term_lower in s.lower() and len(s) > 15:
+            result.append(s)
+            if len(result) >= max_sentences:
+                break
+    return result
+
+
+def _batch_check_usage(items: list[dict], client: anthropic.Anthropic) -> list[dict]:
+    """
+    Check whether terms are used consistently with their parent definitions.
+
+    Each item dict must have:
+        item_id, term, parent_doc, parent_definition, child_doc, usage_sentences
+
+    Returns a list of dicts with:
+        item_id, consistent, severity, explanation
+    """
+    if not items:
+        return []
+
+    prompt = textwrap.dedent(f"""
+        You are a governance document expert. For each item below, a term is formally
+        defined in a parent document. The child document uses the term but does not
+        formally re-define it.
+
+        Review the usage sentences from the child document and determine whether the
+        term is being used consistently with the parent definition.
+
+        Classify each as:
+        - "consistent"  : the child uses the term in a way that aligns with the parent
+                          definition (no flag needed)
+        - "inconsistent": the child uses the term in a way that contradicts or materially
+                          differs from the parent definition
+
+        Also assess severity of any inconsistency:
+        - "high"   : significant compliance or governance risk
+        - "medium" : potential for confusion or misapplication
+        - "low"    : minor difference, unlikely to cause real problems
+        - "none"   : use when consistent
+
+        Return ONLY a JSON array — no markdown fences, no surrounding text:
+        [
+          {{
+            "item_id": "<item_id from input>",
+            "consistent": true,
+            "severity": "none",
+            "explanation": "<1-2 sentence explanation>"
+          }},
+          ...
+        ]
+
+        Items:
+        {json.dumps(items, indent=2)}
+    """).strip()
+
+    response = client.messages.create(
+        model=MODEL,
+        max_tokens=4096,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    raw = _strip_fences(response.content[0].text)
+    return json.loads(raw)
+
+
+def _find_usage_violations(
     child_id: str,
     child_title: str,
-    child_terms: set[str],       # lower-cased terms defined in child
     child_content: str,
+    child_terms: set[str],          # lower-cased terms formally defined in child
     ancestor_defs_map: dict[str, list[Definition]],
     doc_titles: dict[str, str],
+    client: anthropic.Anthropic,
 ) -> list[Finding]:
     """
-    Flag parent-defined terms that appear in child text but are not defined in the child.
+    For each parent-defined term NOT formally defined in the child, extract sentences
+    from the child that use it and ask Claude whether the usage is consistent with the
+    parent definition. Flag case 3: term used but semantically differently from parent.
     """
-    findings: list[Finding] = []
-    child_content_lower = child_content.lower()
+    if not child_content:
+        return []
+
+    items: list[dict] = []
+    item_meta: dict[str, dict] = {}
 
     for ancestor_id, ancestor_defs in ancestor_defs_map.items():
         ancestor_title = doc_titles.get(ancestor_id, ancestor_id)
         for adef in ancestor_defs:
             term_lower = adef.term.lower()
-            if term_lower not in child_terms and term_lower in child_content_lower:
-                findings.append(Finding(
-                    finding_type="missing_definition",
-                    severity="low",
-                    term=adef.term,
-                    child_doc_id=child_id,
-                    child_doc_title=child_title,
-                    parent_doc_id=ancestor_id,
-                    parent_doc_title=ancestor_title,
-                    child_definition=None,
-                    parent_definition=_def_to_dict(adef),
-                    explanation=(
-                        f"'{adef.term}' is defined in '{ancestor_title}' and appears in "
-                        f"'{child_title}', but is not defined or explicitly referenced there."
-                    ),
-                ))
+            if term_lower in child_terms:
+                continue  # formally defined in child → handled by case 1
+            usage_sentences = _extract_usage_sentences(child_content, adef.term)
+            if not usage_sentences:
+                continue  # term not used in child → nothing to check (case 2 passes silently)
+            item_id = f"{child_id}__{ancestor_id}__{term_lower}"
+            items.append({
+                "item_id": item_id,
+                "term": adef.term,
+                "parent_doc": ancestor_title,
+                "parent_definition": adef.definition_text,
+                "child_doc": child_title,
+                "usage_sentences": usage_sentences,
+            })
+            item_meta[item_id] = {
+                "ancestor_id": ancestor_id,
+                "ancestor_title": ancestor_title,
+                "parent_def": adef,
+            }
 
-    return findings
+    if not items:
+        return []
 
-
-def _find_orphan_definitions(
-    child_id: str,
-    child_title: str,
-    child_defs: list[Definition],
-    ancestor_full_text: str,     # concatenated full text of all ancestor documents
-) -> list[Finding]:
-    """
-    Flag child-defined terms that do not appear anywhere in ancestor documents.
-    """
     findings: list[Finding] = []
-    ancestor_lower = ancestor_full_text.lower()
+    for i in range(0, len(items), BATCH_SIZE):
+        batch = items[i : i + BATCH_SIZE]
+        try:
+            results = _batch_check_usage(batch, client)
+        except Exception:
+            continue
 
-    for cdef in child_defs:
-        if cdef.term.lower() not in ancestor_lower:
+        for result in results:
+            item_id = result.get("item_id", "")
+            meta = item_meta.get(item_id)
+            if not meta:
+                continue
+            if result.get("consistent", True):
+                continue
+            severity = result.get("severity", "none")
+            if severity == "none":
+                continue
             findings.append(Finding(
-                finding_type="orphan_definition",
-                severity="low",
-                term=cdef.term,
+                finding_type="usage_violation",
+                severity=severity,
+                term=meta["parent_def"].term,
                 child_doc_id=child_id,
                 child_doc_title=child_title,
-                parent_doc_id="",
-                parent_doc_title="(none)",
-                child_definition=_def_to_dict(cdef),
-                parent_definition=None,
-                explanation=(
-                    f"'{cdef.term}' is defined in '{child_title}' but does not appear "
-                    f"in any ancestor document, suggesting it may be out of scope or "
-                    f"introduced without higher-level authority."
-                ),
+                parent_doc_id=meta["ancestor_id"],
+                parent_doc_title=meta["ancestor_title"],
+                child_definition=None,
+                parent_definition=_def_to_dict(meta["parent_def"]),
+                explanation=result.get("explanation", ""),
             ))
 
     return findings
+
 
 
 # ---------------------------------------------------------------------------
 # Main entry point
 # ---------------------------------------------------------------------------
 
-def run_check(conn) -> dict:
+def run_check(
+    conn,
+    *,
+    mode: "ExtractionMode | list[ExtractionMode]" = ExtractionMode.GLOSSARY,
+) -> dict:
     """
     Build a definitions consistency report for all documents in the DB.
+
+    Parameters
+    ----------
+    conn:
+        Open SQLite connection.
+    mode:
+        Extraction mode(s) passed to ``extract_definitions``.
+        See ``ExtractionMode`` for documentation on each mode.
 
     Returns a dict suitable for JSON serialisation.
     """
@@ -248,6 +354,12 @@ def run_check(conn) -> dict:
 
     hierarchy_rows = get_hierarchy(conn)
 
+    immutable_ids = _get_immutable_ids()
+
+    # Normalise mode to a stable string for the cache key
+    mode_list = mode if isinstance(mode, list) else [mode]
+    mode_key = ",".join(sorted(m.value for m in mode_list))
+
     # --- cache lookup ---
     content_sig = "".join(
         f"{doc_id}:{doc['content'] or ''}"
@@ -255,13 +367,17 @@ def run_check(conn) -> dict:
     ) + "||" + "".join(
         f"{r['id']}:{r['parent_id']}"
         for r in sorted(hierarchy_rows, key=lambda r: (r["id"], r["parent_id"]))
-    )
+    ) + "||immutable:" + ",".join(sorted(immutable_ids)) + "||mode:" + mode_key
     cache_key = f"definitions:{compute_hash(content_sig)}"
     cached = get_cached(conn, cache_key)
     if cached is not None:
         cached["generated_at"] = datetime.now(timezone.utc).isoformat()
         cached["cached"] = True
         return cached
+
+    # Semantic mode needs a shared client so we can pass it to the extractor
+    client = anthropic.Anthropic()
+    extractor_client = client if ExtractionMode.SEMANTIC in mode_list else None
 
     parent_map = _build_parent_map(hierarchy_rows)
     ancestor_map = _build_ancestor_map(parent_map)
@@ -271,7 +387,9 @@ def run_check(conn) -> dict:
     defs_index: dict[str, list[Definition]] = {}
     for doc_id in all_docs:
         sections = get_sections(conn, doc_id)
-        defs_index[doc_id] = extract_definitions(doc_id, list(sections))
+        defs_index[doc_id] = extract_definitions(
+            doc_id, list(sections), mode=mode, client=extractor_client
+        )
 
     # ------------------------------------------------------------------
     # Collect definition pairs for Claude comparison
@@ -279,11 +397,16 @@ def run_check(conn) -> dict:
     comparison_pairs: list[dict] = []
     pair_meta: dict[str, dict] = {}   # pair_id -> metadata for later lookup
 
-    for child_id, parent_ids in parent_map.items():
+    for child_id, child_parent_ids in parent_map.items():
+        if child_id in immutable_ids:
+            continue  # never report findings about immutable documents
+        # Middle-tier documents are both parents and children — always check them
+        # as children against their own parents. Root documents never appear in
+        # parent_map, so no guard is needed here.
         child_defs = defs_index.get(child_id, [])
         child_term_map: dict[str, Definition] = {d.term.lower(): d for d in child_defs}
 
-        for parent_id in parent_ids:
+        for parent_id in child_parent_ids:
             parent_defs = defs_index.get(parent_id, [])
 
             for pdef in parent_defs:
@@ -340,11 +463,13 @@ def run_check(conn) -> dict:
                 ))
 
     # ------------------------------------------------------------------
-    # Structural checks: missing and orphan definitions
+    # Structural checks: usage violations
     # ------------------------------------------------------------------
     for child_id, child_defs in defs_index.items():
         if child_id not in parent_map:
             continue   # root document, no parents to compare against
+        if child_id in immutable_ids:
+            continue   # never report findings about immutable documents
 
         child_doc_row = all_docs[child_id]
         child_content = child_doc_row["content"] or ""
@@ -354,16 +479,9 @@ def run_check(conn) -> dict:
         ancestor_ids = ancestor_map.get(child_id, set())
         ancestor_defs_map = {aid: defs_index.get(aid, []) for aid in ancestor_ids}
 
-        findings.extend(_find_missing_definitions(
-            child_id, child_title, child_terms, child_content,
-            ancestor_defs_map, doc_titles,
-        ))
-
-        ancestor_full_text = " ".join(
-            all_docs[aid]["content"] or "" for aid in ancestor_ids if aid in all_docs
-        )
-        findings.extend(_find_orphan_definitions(
-            child_id, child_title, child_defs, ancestor_full_text,
+        findings.extend(_find_usage_violations(
+            child_id, child_title, child_content, child_terms,
+            ancestor_defs_map, doc_titles, client,
         ))
 
     # ------------------------------------------------------------------
