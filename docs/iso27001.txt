@@ -1,0 +1,202 @@
+ISO 27001:2022 - Information Security Management Systems
+
+1 Scope
+
+This document specifies the requirements for establishing, implementing, maintaining and
+continually improving an information security management system within the context of the
+organization. This document also includes requirements for the assessment and treatment
+of information security risks tailored to the needs of the organization.
+
+2 Normative References
+
+The following documents are referred to in the text in such a way that some or all of their
+content constitutes requirements of this document. For dated references, only the edition
+cited applies.
+
+ISO/IEC 27000, Information technology - Security techniques - Information security
+management systems - Overview and vocabulary.
+
+3 Terms and Definitions
+
+For the purposes of this document, the following terms and definitions apply.
+
+Information security: preservation of confidentiality, integrity and availability of information; may also involve other properties such as authenticity, accountability, non-repudiation and reliability
+
+Information security incident: one or more unwanted or unexpected information security events that have a significant probability of compromising business operations and threatening information security
+
+Information security event: an identified occurrence of a system, service or network state indicating a possible breach of information security policy or failure of controls
+
+Risk: effect of uncertainty on objectives
+
+Threat: potential cause of an unwanted incident which may result in harm to a system or organization
+
+Vulnerability: weakness of an asset or control that can be exploited by one or more threats
+
+Privileged access: access rights that allow users to override system or application controls, including administrative accounts, root accounts, and service accounts with elevated permissions
+
+4 Context of the Organization
+
+4.1 Understanding the Organization and Its Context
+
+The organization shall determine external and internal issues that are relevant to its purpose
+and that affect its ability to achieve the intended outcome(s) of its information security
+management system.
+
+4.2 Understanding the Needs and Expectations of Interested Parties
+
+The organization shall determine interested parties that are relevant to the information
+security management system and the requirements of these interested parties relevant to
+information security.
+
+4.3 Determining the Scope of the ISMS
+
+The organization shall determine the boundaries and applicability of the information security
+management system to establish its scope.
+
+5 Leadership
+
+5.1 Leadership and Commitment
+
+Top management shall demonstrate leadership and commitment with respect to the information
+security management system by ensuring the information security policy and objectives are
+established and compatible with the strategic direction of the organization.
+
+5.2 Policy
+
+Top management shall establish an information security policy that is appropriate to the
+purpose of the organization, includes information security objectives or provides a framework
+for setting information security objectives, and includes a commitment to satisfy applicable
+requirements and to continual improvement.
+
+5.3 Organizational Roles, Responsibilities and Authorities
+
+Top management shall ensure that the responsibilities and authorities for roles relevant to
+information security are assigned and communicated.
+
+6 Planning
+
+6.1 Actions to Address Risks and Opportunities
+
+6.1.1 General
+
+When planning for the information security management system, the organization shall
+consider the issues referred to in clause 4.1 and the requirements referred to in clause 4.2
+and determine the risks and opportunities that need to be addressed.
+
+6.1.2 Information Security Risk Assessment
+
+The organization shall define and apply an information security risk assessment process.
+
+6.1.3 Information Security Risk Treatment
+
+The organization shall define and apply an information security risk treatment process.
+
+6.2 Information Security Objectives and Planning to Achieve Them
+
+The organization shall establish information security objectives at relevant functions and levels.
+
+7 Support
+
+7.1 Resources
+
+The organization shall determine and provide the resources needed for the establishment,
+implementation, maintenance and continual improvement of the information security
+management system.
+
+7.2 Competence
+
+The organization shall determine the necessary competence of persons doing work under its
+control that affects its information security performance.
+
+7.3 Awareness
+
+Persons doing work under the organization's control shall be aware of the information
+security policy and their contribution to the effectiveness of the ISMS.
+
+7.4 Communication
+
+The organization shall determine the need for internal and external communications relevant
+to the information security management system.
+
+7.5 Documented Information
+
+7.5.1 General
+
+The organization's information security management system shall include documented
+information required by this document and documented information determined by the
+organization as being necessary for the effectiveness of the ISMS.
+
+7.5.2 Creating and Updating
+
+When creating and updating documented information, the organization shall ensure appropriate
+format and media and review and approval for suitability and adequacy.
+
+7.5.3 Control of Documented Information
+
+Documented information required by the ISMS and by this document shall be controlled to
+ensure it is available and suitable for use, where and when it is needed.
+
+8 Operation
+
+8.1 Operational Planning and Control
+
+The organization shall plan, implement, control, evaluate and maintain the processes needed
+to meet information security requirements.
+
+8.2 Information Security Risk Assessment
+
+The organization shall perform information security risk assessments at planned intervals or
+when significant changes are proposed or occur.
+
+8.3 Information Security Risk Treatment
+
+The organization shall implement the information security risk treatment plan.
+
+9 Performance Evaluation
+
+9.1 Monitoring, Measurement, Analysis and Evaluation
+
+The organization shall evaluate the information security performance and the effectiveness
+of the information security management system.
+
+9.2 Internal Audit
+
+9.2.1 General
+
+The organization shall conduct internal audits at planned intervals to provide information on
+whether the ISMS conforms to the organization's own requirements and the requirements of
+this document.
+
+9.2.2 Internal Audit Programme
+
+The organization shall plan, establish, implement and maintain an audit programme.
+
+9.3 Management Review
+
+9.3.1 General
+
+Top management shall review the organization's information security management system
+at planned intervals to ensure its continuing suitability, adequacy and effectiveness.
+
+9.3.2 Management Review Inputs
+
+The management review shall include consideration of the status of actions from previous
+management reviews and changes in external and internal issues.
+
+9.3.3 Management Review Results
+
+The results of the management review shall include decisions related to continual improvement
+opportunities and any need for changes to the ISMS.
+
+10 Improvement
+
+10.1 Continual Improvement
+
+The organization shall continually improve the suitability, adequacy and effectiveness of the
+information security management system.
+
+10.2 Nonconformity and Corrective Action
+
+When a nonconformity occurs, the organization shall react to the nonconformity and take
+action to control and correct it, deal with the consequences, and determine if similar
+nonconformities exist or could potentially occur.

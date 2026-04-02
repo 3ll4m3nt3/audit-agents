@@ -1,0 +1,28 @@
+hierarchy:
+  - id: iso27001
+    title: "ISO 27001:2022"
+    file: "iso27001.txt"
+    level: "standard"
+    parsing_hints: "numbered"
+    children:
+      - id: infosec-policy
+        title: "Company InfoSec Policy"
+        file: "infosec-policy.txt"
+        level: "policy"
+        parsing_hints: "markdown"
+        children:
+          - id: access-control-proc
+            title: "Access Control Procedure"
+            file: "access-control.txt"
+            level: "procedure"
+            parsing_hints: "caps"
+          - id: incident-response-proc
+            title: "Incident Response Procedure"
+            file: "incident-response.txt"
+            level: "procedure"
+            parsing_hints: "caps"
+      - id: risk-policy
+        title: "Risk Management Policy"
+        file: "risk-policy.txt"
+        level: "policy"
+        parsing_hints: "markdown"

@@ -1,0 +1,102 @@
+INCIDENT RESPONSE PROCEDURE
+
+PURPOSE
+
+This procedure provides a structured approach for detecting, reporting, and responding to
+information security incidents. Prompt and effective response minimises damage, reduces
+recovery time, and limits reputational impact.
+
+SCOPE
+
+This procedure applies to all information security incidents affecting Acme Corp systems,
+data, or operations, regardless of origin (internal, external, accidental, or deliberate).
+
+DEFINITIONS
+
+Information security incident: any security event that has been reported to the Security team, regardless of the probability of impact on business operations, pending initial triage and classification
+
+Incident Commander: the designated Security Team member responsible for coordinating response activities for a given incident
+
+INCIDENT CLASSIFICATION
+
+SEVERITY 1 - CRITICAL
+Active breach or ransomware with confirmed data exfiltration or widespread system
+compromise. Requires immediate escalation to CISO and executive leadership.
+Response SLA: 1 hour.
+
+SEVERITY 2 - HIGH
+Confirmed unauthorised access, significant malware infection, or loss of sensitive data.
+Response SLA: 4 hours.
+
+SEVERITY 3 - MEDIUM
+Suspected unauthorised access, phishing attempt with partial success, or policy violation
+with potential data exposure.
+Response SLA: 24 hours.
+
+SEVERITY 4 - LOW
+Policy violation with no data exposure, unsuccessful attack attempt, or anomalous activity
+with no confirmed impact.
+Response SLA: 72 hours.
+
+PROCEDURE
+
+DETECTION AND REPORTING
+
+Step 1 - Any employee who suspects or discovers a security incident must report it
+immediately via email to security@acme.com or by calling the Security Hotline.
+
+Step 2 - The Security Team acknowledges the report within 30 minutes during business
+hours and within 2 hours outside business hours.
+
+Step 3 - The on-call analyst performs an initial triage to classify the incident severity
+and opens a ticket in the incident tracking system.
+
+INITIAL RESPONSE
+
+Step 1 - The Incident Commander (IC) is assigned based on severity. Severity 1 and 2
+incidents require a senior Security Team member as IC.
+
+Step 2 - The IC assembles the Incident Response Team, which may include IT Operations,
+Legal, Communications, and senior management as appropriate.
+
+Step 3 - Evidence preservation actions are taken before containment where possible.
+Affected systems are isolated only after forensic images are captured for Severity 1/2.
+
+CONTAINMENT
+
+Step 1 - The IC directs containment actions appropriate to the incident type: network
+isolation, account suspension, firewall rule changes, or system shutdown.
+
+Step 2 - The IC documents all containment actions with timestamps in the incident ticket.
+
+Step 3 - Business continuity options are activated where containment impacts operations.
+
+ERADICATION AND RECOVERY
+
+Step 1 - Root cause is identified and documented before recovery begins.
+
+Step 2 - Affected systems are rebuilt or restored from verified clean backups. Patches
+and configuration changes are applied to prevent recurrence.
+
+Step 3 - Systems are returned to production only after sign-off from the IC and, for
+Severity 1/2, the CISO.
+
+POST-INCIDENT REVIEW
+
+A post-incident review shall be conducted within five business days for Severity 1/2
+incidents and within ten business days for Severity 3. The review shall document:
+timeline of events, root cause, actions taken, effectiveness of the response, and
+recommended improvements.
+
+EXTERNAL NOTIFICATION
+
+Legal shall be consulted immediately for any incident involving personal data that may
+trigger regulatory notification obligations. Data protection authority notifications shall
+be submitted within 72 hours of confirmation where required by applicable regulation.
+
+RELATED DOCUMENTS
+
+- Company Information Security Policy
+- Business Continuity Plan
+- Data Breach Notification Standard
+- Incident Log (Security-owned)

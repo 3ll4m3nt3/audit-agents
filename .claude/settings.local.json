@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(govcheck --help)",
+      "Bash(govcheck ingest:*)",
+      "Bash(mkdir -p /tmp/govdocs)",
+      "Bash(govcheck tree:*)",
+      "Bash(python -m govcheck.cli --help)",
+      "Bash(ls /mnt/c/Code/governance/*.yaml /mnt/c/Code/governance/*.toml /mnt/c/Code/governance/*.cfg /mnt/c/Code/governance/setup.py)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(govcheck sections:*)",
+      "Bash(/mnt/c/Code/governance/.venv/Scripts/python3.exe govcheck/cli.py)",
+      "Bash(/mnt/c/Code/governance/.venv/Scripts/python.exe -c \"import anthropic; print\\('ok'\\)\")",
+      "Bash(/mnt/c/Code/governance/.venv/Scripts/python.exe -m govcheck.cli check definitions -o /mnt/c/Code/governance/report.json)",
+      "Bash(/mnt/c/Code/governance/.venv/Scripts/python.exe:*)",
+      "Bash(govcheck check:*)",
+      "Bash(grep -E \"\\\\.\\(py|md|txt|yaml|yml|toml|cfg\\)$\")"
+    ]
+  }
+}

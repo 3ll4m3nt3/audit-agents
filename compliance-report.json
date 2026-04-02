@@ -1,0 +1,1423 @@
+{
+  "generated_at": "2026-04-01T15:50:50.725764+00:00",
+  "model": "claude-sonnet-4-20250514",
+  "check_type": "compliance",
+  "pairs_checked": [
+    {
+      "parent_doc_id": "infosec-policy",
+      "child_doc_id": "access-control-proc",
+      "requirements_checked": 13
+    },
+    {
+      "parent_doc_id": "infosec-policy",
+      "child_doc_id": "incident-response-proc",
+      "requirements_checked": 13
+    },
+    {
+      "parent_doc_id": "iso27001",
+      "child_doc_id": "infosec-policy",
+      "requirements_checked": 28
+    },
+    {
+      "parent_doc_id": "iso27001",
+      "child_doc_id": "risk-policy",
+      "requirements_checked": 28
+    }
+  ],
+  "findings": [
+    {
+      "req_id": "infosec-policy__r0",
+      "requirement_text": "All information assets shall be classified according to their sensitivity and criticality.",
+      "requirement_section": "3.1 Information Classification",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "RELATED DOCUMENTS"
+      ],
+      "explanation": "The child document does not address information asset classification according to sensitivity and criticality. The provided sections only mention managing access to information assets without any classification requirements.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r1",
+      "requirement_text": "Access to information assets shall be granted on a least-privilege basis.",
+      "requirement_section": "3.2 Access Control",
+      "status": "covered",
+      "evidence": "Least privilege: the practice of limiting user access to only the systems required for their current role... IT Helpdesk removes access no longer required before granting new access rights, following the principle of least privilege.",
+      "evidence_sections": [
+        "DEFINITIONS",
+        "PURPOSE",
+        "MODIFYING EXISTING ACCESS"
+      ],
+      "explanation": "The document clearly defines least privilege and explicitly requires its implementation when granting and modifying access rights.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r2",
+      "requirement_text": "All access rights shall be reviewed at least annually.",
+      "requirement_section": "3.2 Access Control",
+      "status": "covered",
+      "evidence": "Access rights shall be reviewed quarterly for privileged accounts and annually for all other accounts.",
+      "evidence_sections": [
+        "PERIODIC ACCESS REVIEWS",
+        "MODIFYING EXISTING ACCESS",
+        "SCOPE"
+      ],
+      "explanation": "The requirement for at least annual reviews is met, with the child document actually exceeding this by requiring quarterly reviews for privileged accounts.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r3",
+      "requirement_text": "User accounts shall be disabled immediately upon termination of employment or contract.",
+      "requirement_section": "3.2 Access Control",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "DEFINITIONS",
+        "PROVISIONING NEW ACCESS"
+      ],
+      "explanation": "While the document mentions account lifecycle management in its scope, none of the provided sections contain specific procedures for immediate account disabling upon termination of employment or contract.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r4",
+      "requirement_text": "Company information assets shall be used for legitimate business purposes only.",
+      "requirement_section": "3.3 Acceptable Use",
+      "status": "partially_covered",
+      "evidence": "specifying the user, system, role, and business justification",
+      "evidence_sections": [
+        "PURPOSE",
+        "RELATED DOCUMENTS",
+        "PROVISIONING NEW ACCESS"
+      ],
+      "explanation": "The document requires business justification for access requests, which implies legitimate business use, but it doesn't explicitly state that information assets shall be used for legitimate business purposes only.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r5",
+      "requirement_text": "All systems shall enforce strong authentication.",
+      "requirement_section": "3.4 Password and Authentication",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "SCOPE",
+        "DEFINITIONS"
+      ],
+      "explanation": "The provided sections do not address strong authentication requirements or any authentication mechanisms that systems must enforce.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r6",
+      "requirement_text": "Passwords must be a minimum of 12 characters and must not be shared.",
+      "requirement_section": "3.4 Password and Authentication",
+      "status": "partially_covered",
+      "evidence": "Shared passwords are prohibited.",
+      "evidence_sections": [
+        "PRIVILEGED ACCESS MANAGEMENT"
+      ],
+      "explanation": "The document addresses the password sharing prohibition but does not specify the minimum 12-character password requirement.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r7",
+      "requirement_text": "All employees must report suspected information security incidents immediately to the Security team at security@acme.com or via the internal ticketing system.",
+      "requirement_section": "3.5 Incident Reporting",
+      "status": "partially_covered",
+      "evidence": "The Security Team is responsible for... investigating access-related incidents.",
+      "evidence_sections": [
+        "ROLES AND RESPONSIBILITIES",
+        "PURPOSE",
+        "PROVISIONING NEW ACCESS"
+      ],
+      "explanation": "The document mentions that the Security Team investigates access-related incidents but does not specify the immediate reporting requirement or provide the contact information (security@acme.com) or reporting channels.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r8",
+      "requirement_text": "The organization shall conduct an annual information security risk assessment.",
+      "requirement_section": "4 Risk Management",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "RELATED DOCUMENTS",
+        "ROLES AND RESPONSIBILITIES"
+      ],
+      "explanation": "The Access Control Procedure does not mention annual information security risk assessments. The document focuses solely on access management processes.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r9",
+      "requirement_text": "Risk treatment decisions shall be documented and approved by the Chief Information Security Officer.",
+      "requirement_section": "4 Risk Management",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "RELATED DOCUMENTS",
+        "ROLES AND RESPONSIBILITIES"
+      ],
+      "explanation": "No content addresses risk treatment decisions or approval by the Chief Information Security Officer. The document only covers access control roles and responsibilities.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r10",
+      "requirement_text": "The organization shall identify and comply with all applicable legal, regulatory, and contractual requirements relating to information security, including data protection laws.",
+      "requirement_section": "5.1 Legal and Regulatory Requirements",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "RELATED DOCUMENTS",
+        "SCOPE"
+      ],
+      "explanation": "The procedure does not identify or reference compliance with legal, regulatory, or contractual requirements. It only describes technical access control processes.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r11",
+      "requirement_text": "This policy and its associated controls shall be reviewed annually or following a significant security incident.",
+      "requirement_section": "5.2 Audit and Review",
+      "status": "partially_covered",
+      "evidence": "Access rights shall be reviewed quarterly for privileged accounts and annually for all other accounts",
+      "evidence_sections": [
+        "PURPOSE",
+        "PERIODIC ACCESS REVIEWS",
+        "RELATED DOCUMENTS"
+      ],
+      "explanation": "The document addresses periodic reviews but only for access rights, not the overall policy and controls as required. The scope is narrower than the parent requirement.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r12",
+      "requirement_text": "Internal audits shall verify compliance with this policy.",
+      "requirement_section": "5.2 Audit and Review",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "RELATED DOCUMENTS"
+      ],
+      "explanation": "No mention of internal audits or compliance verification processes is found in the provided sections of the Access Control Procedure.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "access-control-proc",
+      "child_doc_title": "Access Control Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r0",
+      "requirement_text": "All information assets shall be classified according to their sensitivity and criticality.",
+      "requirement_section": "3.1 Information Classification",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "SCOPE",
+        "DEFINITIONS"
+      ],
+      "explanation": "The provided sections contain general purpose, scope, and definitions but do not address information asset classification by sensitivity and criticality.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r1",
+      "requirement_text": "Access to information assets shall be granted on a least-privilege basis.",
+      "requirement_section": "3.2 Access Control",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "SCOPE",
+        "DEFINITIONS"
+      ],
+      "explanation": "The provided sections focus on incident response fundamentals and do not address access control or least-privilege principles.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r2",
+      "requirement_text": "All access rights shall be reviewed at least annually.",
+      "requirement_section": "3.2 Access Control",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "SEVERITY 2 - HIGH",
+        "SEVERITY 3 - MEDIUM"
+      ],
+      "explanation": "The sections discuss incident severity levels and response times but contain no information about annual access rights reviews.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r3",
+      "requirement_text": "User accounts shall be disabled immediately upon termination of employment or contract.",
+      "requirement_section": "3.2 Access Control",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "DETECTION AND REPORTING",
+        "EXTERNAL NOTIFICATION"
+      ],
+      "explanation": "The sections cover incident detection, reporting procedures, and external notifications but do not address account termination processes.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r4",
+      "requirement_text": "Company information assets shall be used for legitimate business purposes only.",
+      "requirement_section": "3.3 Acceptable Use",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "RELATED DOCUMENTS",
+        "DEFINITIONS",
+        "PURPOSE"
+      ],
+      "explanation": "The sections contain procedural definitions and references but do not establish acceptable use requirements for company information assets.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r5",
+      "requirement_text": "All systems shall enforce strong authentication.",
+      "requirement_section": "3.4 Password and Authentication",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "SCOPE",
+        "INITIAL RESPONSE",
+        "ERADICATION AND RECOVERY"
+      ],
+      "explanation": "The sections describe incident response workflows and system recovery processes but do not address authentication requirements.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r6",
+      "requirement_text": "Passwords must be a minimum of 12 characters and must not be shared.",
+      "requirement_section": "3.4 Password and Authentication",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "INCIDENT RESPONSE PROCEDURE"
+      ],
+      "explanation": "Only an empty heading is provided with no content addressing password requirements or sharing restrictions.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r7",
+      "requirement_text": "All employees must report suspected information security incidents immediately to the Security team at security@acme.com or via the internal ticketing system.",
+      "requirement_section": "3.5 Incident Reporting",
+      "status": "covered",
+      "evidence": "Any employee who suspects or discovers a security incident must report it immediately via email to security@acme.com or by calling the Security Hotline.",
+      "evidence_sections": [
+        "DETECTION AND REPORTING",
+        "SCOPE",
+        "PURPOSE"
+      ],
+      "explanation": "The procedure clearly specifies the requirement for immediate incident reporting to security@acme.com, matching the policy requirement exactly.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r8",
+      "requirement_text": "The organization shall conduct an annual information security risk assessment.",
+      "requirement_section": "4 Risk Management",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "SCOPE",
+        "DEFINITIONS"
+      ],
+      "explanation": "The incident response procedure does not address annual risk assessments. The document focuses on incident response processes rather than proactive risk assessment activities.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r9",
+      "requirement_text": "Risk treatment decisions shall be documented and approved by the Chief Information Security Officer.",
+      "requirement_section": "4 Risk Management",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "PURPOSE",
+        "SCOPE",
+        "DEFINITIONS"
+      ],
+      "explanation": "The document does not mention risk treatment decisions or CISO approval processes. It only addresses incident response coordination through an Incident Commander role.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r10",
+      "requirement_text": "The organization shall identify and comply with all applicable legal, regulatory, and contractual requirements relating to information security, including data protection laws.",
+      "requirement_section": "5.1 Legal and Regulatory Requirements",
+      "status": "partially_covered",
+      "evidence": "Legal shall be consulted immediately for any incident involving personal data that may trigger regulatory notification obligations. Data protection authority notifications shall be submitted within 72 hours of confirmation where required by applicable regulation.",
+      "evidence_sections": [
+        "EXTERNAL NOTIFICATION",
+        "SCOPE",
+        "RELATED DOCUMENTS"
+      ],
+      "explanation": "The document addresses compliance with data protection notification requirements during incidents but does not comprehensively address identification and compliance with all legal, regulatory, and contractual requirements.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r11",
+      "requirement_text": "This policy and its associated controls shall be reviewed annually or following a significant security incident.",
+      "requirement_section": "5.2 Audit and Review",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "RELATED DOCUMENTS",
+        "DEFINITIONS",
+        "DETECTION AND REPORTING"
+      ],
+      "explanation": "The document does not include any provisions for annual policy reviews or reviews following significant security incidents. It focuses on operational incident response procedures rather than policy governance.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "infosec-policy__r12",
+      "requirement_text": "Internal audits shall verify compliance with this policy.",
+      "requirement_section": "5.2 Audit and Review",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "SCOPE",
+        "SEVERITY 3 - MEDIUM",
+        "SEVERITY 4 - LOW"
+      ],
+      "explanation": "The document does not address internal audits or compliance verification processes. The content focuses exclusively on incident detection, reporting, and response procedures.",
+      "parent_doc_id": "infosec-policy",
+      "parent_doc_title": "Company InfoSec Policy",
+      "child_doc_id": "incident-response-proc",
+      "child_doc_title": "Incident Response Procedure"
+    },
+    {
+      "req_id": "iso27001__r0",
+      "requirement_text": "The organization shall determine external and internal issues that are relevant to its purpose and that affect its ability to achieve the intended outcome(s) of its information security management system.",
+      "requirement_section": "4.1 Understanding the Organization and Its Context",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "The child document does not address determining external and internal issues relevant to the organization's purpose and their impact on ISMS outcomes. Only general risk management activities are mentioned.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r1",
+      "requirement_text": "The organization shall determine interested parties that are relevant to the information security management system and the requirements of these interested parties relevant to information security.",
+      "requirement_section": "4.2 Understanding the Needs and Expectations of Interested Parties",
+      "status": "partially_covered",
+      "evidence": "The organization shall identify and comply with all applicable legal, regulatory, and contractual requirements relating to information security",
+      "evidence_sections": [
+        "Definitions",
+        "5.1 Legal and Regulatory Requirements",
+        "3.5 Incident Reporting"
+      ],
+      "explanation": "The document mentions legal and regulatory requirements but does not comprehensively identify interested parties or their specific information security requirements.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r2",
+      "requirement_text": "The organization shall determine the boundaries and applicability of the information security management system to establish its scope.",
+      "requirement_section": "4.3 Determining the Scope of the ISMS",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "No content addresses determining the boundaries and scope of the information security management system. The provided sections do not establish ISMS scope or applicability.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r3",
+      "requirement_text": "Top management shall demonstrate leadership and commitment with respect to the information security management system by ensuring the information security policy and objectives are established and compatible with the strategic direction of the organization.",
+      "requirement_section": "5.1 Leadership and Commitment",
+      "status": "partially_covered",
+      "evidence": "Residual risks exceeding the risk appetite threshold require sign-off from the Chief Executive Officer",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "While CEO involvement is mentioned for risk decisions, there is no demonstration of top management leadership in establishing policy and objectives compatible with strategic direction.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r4",
+      "requirement_text": "Top management shall establish an information security policy that is appropriate to the purpose of the organization, includes information security objectives or provides a framework for setting information security objectives, and includes a commitment to satisfy applicable requirements and to continual improvement.",
+      "requirement_section": "5.2 Policy",
+      "status": "partially_covered",
+      "evidence": "This policy establishes the framework for protecting the confidentiality, integrity, and availability of Acme Corp's information assets",
+      "evidence_sections": [
+        "5.1 Legal and Regulatory Requirements",
+        "Definitions",
+        "1 Purpose"
+      ],
+      "explanation": "The policy states its purpose but lacks specific information security objectives, a framework for setting objectives, or explicit commitment to continual improvement.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r5",
+      "requirement_text": "Top management shall ensure that the responsibilities and authorities for roles relevant to information security are assigned and communicated.",
+      "requirement_section": "5.3 Organizational Roles, Responsibilities and Authorities",
+      "status": "partially_covered",
+      "evidence": "Risk treatment decisions shall be documented and approved by the Chief Information Security Officer",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "Only the CISO role is mentioned in relation to risk decisions, but comprehensive assignment and communication of all information security roles and responsibilities is not addressed.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r6",
+      "requirement_text": "When planning for the information security management system, the organization shall consider the issues referred to in clause 4.1 and the requirements referred to in clause 4.2 and determine the risks and opportunities that need to be addressed.",
+      "requirement_section": "6.1.1 General",
+      "status": "partially_covered",
+      "evidence": "The organization shall conduct an annual information security risk assessment",
+      "evidence_sections": [
+        "Definitions",
+        "4 Risk Management",
+        "5.1 Legal and Regulatory Requirements"
+      ],
+      "explanation": "Risk assessment is mentioned but there is no evidence of considering organizational context issues or interested party requirements in planning as required by clauses 4.1 and 4.2.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r7",
+      "requirement_text": "The organization shall define and apply an information security risk assessment process.",
+      "requirement_section": "6.1.2 Information Security Risk Assessment",
+      "status": "partially_covered",
+      "evidence": "The organization shall conduct an annual information security risk assessment",
+      "evidence_sections": [
+        "4 Risk Management",
+        "Definitions",
+        "5.1 Legal and Regulatory Requirements"
+      ],
+      "explanation": "An annual risk assessment is mentioned but the document lacks details on the defined risk assessment process, methodology, or criteria.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r8",
+      "requirement_text": "The organization shall define and apply an information security risk treatment process.",
+      "requirement_section": "6.1.3 Information Security Risk Treatment",
+      "status": "partially_covered",
+      "evidence": "Risk treatment decisions shall be documented and approved by the Chief Information Security Officer. Residual risks exceeding the risk appetite threshold require sign-off from the Chief Executive Officer.",
+      "evidence_sections": [
+        "4 Risk Management",
+        "Definitions",
+        "5.1 Legal and Regulatory Requirements"
+      ],
+      "explanation": "The child document mentions risk treatment decisions and approval processes, but lacks detail on the actual risk treatment process itself, such as methods for treating risks or implementation procedures.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r9",
+      "requirement_text": "The organization shall establish information security objectives at relevant functions and levels.",
+      "requirement_section": "6.2 Information Security Objectives and Planning to Achieve Them",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "4 Risk Management",
+        "5.1 Legal and Regulatory Requirements"
+      ],
+      "explanation": "The provided sections do not contain any information about establishing information security objectives at relevant functions and levels. The content focuses on risk management and compliance but not on setting specific objectives.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r10",
+      "requirement_text": "The organization shall determine and provide the resources needed for the establishment, implementation, maintenance and continual improvement of the information security management system.",
+      "requirement_section": "7.1 Resources",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "The provided sections do not address determining or providing resources for the ISMS establishment, implementation, maintenance, and continual improvement. The content covers incident reporting and risk management but not resource allocation.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r11",
+      "requirement_text": "The organization shall determine the necessary competence of persons doing work under its control that affects its information security performance.",
+      "requirement_section": "7.2 Competence",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "4 Risk Management",
+        "5.1 Legal and Regulatory Requirements"
+      ],
+      "explanation": "The provided sections do not address determining necessary competence of persons affecting information security performance. There is no mention of competency requirements, training, or qualifications.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r12",
+      "requirement_text": "Persons doing work under the organization's control shall be aware of the information security policy and their contribution to the effectiveness of the ISMS.",
+      "requirement_section": "7.3 Awareness",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "4 Risk Management",
+        "5.1 Legal and Regulatory Requirements"
+      ],
+      "explanation": "The provided sections do not address ensuring personnel awareness of the information security policy or their contribution to ISMS effectiveness. There is no mention of awareness programs or requirements.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r13",
+      "requirement_text": "The organization shall determine the need for internal and external communications relevant to the information security management system.",
+      "requirement_section": "7.4 Communication",
+      "status": "partially_covered",
+      "evidence": "All employees must report suspected information security incidents immediately to the Security team at security@acme.com or via the internal ticketing system.",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "The document mentions incident reporting communication requirements but does not comprehensively address the broader need for determining internal and external communications relevant to the ISMS.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r14",
+      "requirement_text": "The organization's information security management system shall include documented information required by this document and documented information determined by the organization as being necessary for the effectiveness of the ISMS.",
+      "requirement_section": "7.5.1 General",
+      "status": "partially_covered",
+      "evidence": "Risk treatment decisions shall be documented and approved",
+      "evidence_sections": [
+        "Definitions",
+        "4 Risk Management",
+        "3.5 Incident Reporting"
+      ],
+      "explanation": "The document mentions some documentation requirements for risk treatment decisions but does not comprehensively address all documented information required for ISMS effectiveness as specified in the standard.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r15",
+      "requirement_text": "When creating and updating documented information, the organization shall ensure appropriate format and media and review and approval for suitability and adequacy.",
+      "requirement_section": "7.5.2 Creating and Updating",
+      "status": "partially_covered",
+      "evidence": "Risk treatment decisions shall be documented and approved by the Chief Information Security Officer",
+      "evidence_sections": [
+        "4 Risk Management",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The document mentions approval processes for risk treatment documentation but lacks comprehensive requirements for format, media, review and approval processes for all documented information creation and updating.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r16",
+      "requirement_text": "Documented information required by the ISMS and by this document shall be controlled to ensure it is available and suitable for use, where and when it is needed.",
+      "requirement_section": "7.5.3 Control of Documented Information",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "4 Risk Management",
+        "1 Purpose",
+        "2 Scope"
+      ],
+      "explanation": "None of the provided sections address the control of documented information to ensure availability and suitability for use. The sections cover risk management, purpose, and scope but not document control processes.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r17",
+      "requirement_text": "The organization shall plan, implement, control, evaluate and maintain the processes needed to meet information security requirements.",
+      "requirement_section": "8.1 Operational Planning and Control",
+      "status": "partially_covered",
+      "evidence": "The organization shall conduct an annual information security risk assessment",
+      "evidence_sections": [
+        "5.1 Legal and Regulatory Requirements",
+        "Definitions",
+        "4 Risk Management"
+      ],
+      "explanation": "The policy mentions some processes like annual risk assessments and compliance identification, but lacks comprehensive coverage of planning, implementing, controlling, evaluating and maintaining all information security processes.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r18",
+      "requirement_text": "The organization shall perform information security risk assessments at planned intervals or when significant changes are proposed or occur.",
+      "requirement_section": "8.2 Information Security Risk Assessment",
+      "status": "partially_covered",
+      "evidence": "The organization shall conduct an annual information security risk assessment",
+      "evidence_sections": [
+        "Definitions",
+        "4 Risk Management",
+        "5.1 Legal and Regulatory Requirements"
+      ],
+      "explanation": "The policy specifies annual risk assessments but does not address performing assessments when significant changes are proposed or occur, missing a key trigger for risk assessment activities.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r19",
+      "requirement_text": "The organization shall implement the information security risk treatment plan.",
+      "requirement_section": "8.3 Information Security Risk Treatment",
+      "status": "partially_covered",
+      "evidence": "Risk treatment decisions shall be documented and approved by the Chief Information Security Officer",
+      "evidence_sections": [
+        "4 Risk Management",
+        "Definitions",
+        "5.1 Legal and Regulatory Requirements"
+      ],
+      "explanation": "The policy mentions risk treatment decisions and approval processes but does not explicitly address implementing the risk treatment plan itself, focusing more on decision-making than implementation.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r20",
+      "requirement_text": "The organization shall evaluate the information security performance and the effectiveness of the information security management system.",
+      "requirement_section": "9.1 Monitoring, Measurement, Analysis and Evaluation",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "None of the provided sections address monitoring, measuring, analyzing or evaluating information security performance and ISMS effectiveness. The sections focus on incident reporting and risk management but not performance evaluation.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r21",
+      "requirement_text": "The organization shall conduct internal audits at planned intervals to provide information on whether the ISMS conforms to the organization's own requirements and the requirements of this document.",
+      "requirement_section": "9.2.1 General",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "4 Risk Management",
+        "5.1 Legal and Regulatory Requirements",
+        "Definitions"
+      ],
+      "explanation": "No mention of internal audits or audit activities to assess ISMS conformity is found in the provided sections. The content covers risk management and compliance but not internal audit requirements.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r22",
+      "requirement_text": "The organization shall plan, establish, implement and maintain an audit programme.",
+      "requirement_section": "9.2.2 Internal Audit Programme",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "4 Risk Management",
+        "5.1 Legal and Regulatory Requirements"
+      ],
+      "explanation": "No reference to establishing, implementing, or maintaining an audit programme is present in the provided sections. The policy lacks any audit programme planning or management provisions.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r23",
+      "requirement_text": "Top management shall review the organization's information security management system at planned intervals to ensure its continuing suitability, adequacy and effectiveness.",
+      "requirement_section": "9.3.1 General",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "No provisions for top management review of the ISMS at planned intervals are mentioned in the provided sections. While CEO approval is mentioned for residual risks, this does not constitute systematic ISMS review.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r24",
+      "requirement_text": "The management review shall include consideration of the status of actions from previous management reviews and changes in external and internal issues.",
+      "requirement_section": "9.3.2 Management Review Inputs",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "3.1 Information Classification",
+        "3.5 Incident Reporting"
+      ],
+      "explanation": "The child document sections contain definitions, information classification, and incident reporting procedures, but do not address management review processes, status of previous actions, or consideration of internal/external changes.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r25",
+      "requirement_text": "The results of the management review shall include decisions related to continual improvement opportunities and any need for changes to the ISMS.",
+      "requirement_section": "9.3.3 Management Review Results",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "4 Risk Management",
+        "7 Document Control"
+      ],
+      "explanation": "While the document shows version control suggesting some review activity, there is no content addressing management review results, continual improvement decisions, or changes to the ISMS based on management review outcomes.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r26",
+      "requirement_text": "The organization shall continually improve the suitability, adequacy and effectiveness of the information security management system.",
+      "requirement_section": "10.1 Continual Improvement",
+      "status": "partially_covered",
+      "evidence": "The organization shall conduct an annual information security risk assessment",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "The annual risk assessment could be considered a form of continual improvement activity, but the document lacks explicit commitment to continuously improve the ISMS's suitability, adequacy, and effectiveness.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r27",
+      "requirement_text": "When a nonconformity occurs, the organization shall react to the nonconformity and take action to control and correct it, deal with the consequences, and determine if similar nonconformities exist or could potentially occur.",
+      "requirement_section": "10.2 Nonconformity and Corrective Action",
+      "status": "partially_covered",
+      "evidence": "All employees must report suspected information security incidents immediately",
+      "evidence_sections": [
+        "Definitions",
+        "3.5 Incident Reporting",
+        "4 Risk Management"
+      ],
+      "explanation": "The incident reporting requirement addresses part of reacting to nonconformities, but the document lacks procedures for corrective action, dealing with consequences, or determining if similar nonconformities exist or could occur.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "infosec-policy",
+      "child_doc_title": "Company InfoSec Policy"
+    },
+    {
+      "req_id": "iso27001__r0",
+      "requirement_text": "The organization shall determine external and internal issues that are relevant to its purpose and that affect its ability to achieve the intended outcome(s) of its information security management system.",
+      "requirement_section": "4.1 Understanding the Organization and Its Context",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "Definitions",
+        "2 Scope"
+      ],
+      "explanation": "The policy mentions alignment with strategic objectives but does not address determining external and internal issues that affect the ISMS outcomes.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r1",
+      "requirement_text": "The organization shall determine interested parties that are relevant to the information security management system and the requirements of these interested parties relevant to information security.",
+      "requirement_section": "4.2 Understanding the Needs and Expectations of Interested Parties",
+      "status": "partially_covered",
+      "evidence": "third-party relationships that could expose Acme Corp to information security risk",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The policy mentions third-party relationships but does not comprehensively identify interested parties or their specific information security requirements.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r2",
+      "requirement_text": "The organization shall determine the boundaries and applicability of the information security management system to establish its scope.",
+      "requirement_section": "4.3 Determining the Scope of the ISMS",
+      "status": "partially_covered",
+      "evidence": "This policy applies to all information assets, business processes, and third-party relationships",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The scope section provides some boundaries but lacks the specificity required to establish clear ISMS scope boundaries and applicability.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r3",
+      "requirement_text": "Top management shall demonstrate leadership and commitment with respect to the information security management system by ensuring the information security policy and objectives are established and compatible with the strategic direction of the organization.",
+      "requirement_section": "5.1 Leadership and Commitment",
+      "status": "partially_covered",
+      "evidence": "aligned with the company's strategic objectives and risk appetite",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The policy mentions alignment with strategic objectives but does not demonstrate top management leadership and commitment to the ISMS.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r4",
+      "requirement_text": "Top management shall establish an information security policy that is appropriate to the purpose of the organization, includes information security objectives or provides a framework for setting information security objectives, and includes a commitment to satisfy applicable requirements and to continual improvement.",
+      "requirement_section": "5.2 Policy",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "7 Roles and Responsibilities"
+      ],
+      "explanation": "This is a risk management policy, not an information security policy, and lacks the required elements such as objectives framework and commitment to continual improvement.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r5",
+      "requirement_text": "Top management shall ensure that the responsibilities and authorities for roles relevant to information security are assigned and communicated.",
+      "requirement_section": "5.3 Organizational Roles, Responsibilities and Authorities",
+      "status": "partially_covered",
+      "evidence": "The CISO owns this policy and is responsible for maintaining the risk register, overseeing risk assessments, and reporting to executive leadership",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "5.3 Implementation and Tracking"
+      ],
+      "explanation": "The policy defines some roles and responsibilities for risk management but does not comprehensively address all information security roles and authorities.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r6",
+      "requirement_text": "When planning for the information security management system, the organization shall consider the issues referred to in clause 4.1 and the requirements referred to in clause 4.2 and determine the risks and opportunities that need to be addressed.",
+      "requirement_section": "6.1.1 General",
+      "status": "partially_covered",
+      "evidence": "identifying, assessing, treating, and monitoring information security risks",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The policy addresses risk identification and assessment but does not explicitly reference consideration of clause 4.1 and 4.2 issues in ISMS planning.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r7",
+      "requirement_text": "The organization shall define and apply an information security risk assessment process.",
+      "requirement_section": "6.1.2 Information Security Risk Assessment",
+      "status": "partially_covered",
+      "evidence": "This policy defines Acme Corp's approach to identifying, assessing, treating, and monitoring information security risks",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "4.3 Asset Inventory"
+      ],
+      "explanation": "The policy mentions risk assessment approach but lacks specific details about the risk assessment process methodology and procedures.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r8",
+      "requirement_text": "The organization shall define and apply an information security risk treatment process.",
+      "requirement_section": "6.1.3 Information Security Risk Treatment",
+      "status": "partially_covered",
+      "evidence": "This policy defines Acme Corp's approach to identifying, assessing, treating, and monitoring information security risks.",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The policy mentions risk treatment as part of its approach but the provided sections lack specific details about the actual risk treatment process and procedures.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r9",
+      "requirement_text": "The organization shall establish information security objectives at relevant functions and levels.",
+      "requirement_section": "6.2 Information Security Objectives and Planning to Achieve Them",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "5.3 Implementation and Tracking"
+      ],
+      "explanation": "The provided sections do not contain any information about establishing information security objectives at relevant functions and levels. The content focuses on risk management processes rather than objective setting.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r10",
+      "requirement_text": "The organization shall determine and provide the resources needed for the establishment, implementation, maintenance and continual improvement of the information security management system.",
+      "requirement_section": "7.1 Resources",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The provided sections contain no information about determining or providing resources for the ISMS establishment, implementation, maintenance, or continual improvement.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r11",
+      "requirement_text": "The organization shall determine the necessary competence of persons doing work under its control that affects its information security performance.",
+      "requirement_section": "7.2 Competence",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The provided sections do not address determining necessary competence of persons doing work that affects information security performance.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r12",
+      "requirement_text": "Persons doing work under the organization's control shall be aware of the information security policy and their contribution to the effectiveness of the ISMS.",
+      "requirement_section": "7.3 Awareness",
+      "status": "partially_covered",
+      "evidence": "The CISO owns this policy... Asset Owners are responsible for identifying risks... The Security Team facilitates risk assessments",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "7 Roles and Responsibilities"
+      ],
+      "explanation": "The roles and responsibilities section shows some awareness elements but lacks specific requirements for ensuring personnel awareness of the information security policy and ISMS contributions.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r13",
+      "requirement_text": "The organization shall determine the need for internal and external communications relevant to the information security management system.",
+      "requirement_section": "7.4 Communication",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The provided sections contain no information about determining internal and external communication needs relevant to the ISMS.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r14",
+      "requirement_text": "The organization's information security management system shall include documented information required by this document and documented information determined by the organization as being necessary for the effectiveness of the ISMS.",
+      "requirement_section": "7.5.1 General",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "While this is a documented policy itself, the provided sections do not address the broader requirement for documented information necessary for ISMS effectiveness.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r15",
+      "requirement_text": "When creating and updating documented information, the organization shall ensure appropriate format and media and review and approval for suitability and adequacy.",
+      "requirement_section": "7.5.2 Creating and Updating",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "1 Purpose",
+        "2 Scope"
+      ],
+      "explanation": "The provided sections contain no information about processes for creating and updating documented information, including format, media, review, and approval requirements.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r16",
+      "requirement_text": "Documented information required by the ISMS and by this document shall be controlled to ensure it is available and suitable for use, where and when it is needed.",
+      "requirement_section": "7.5.3 Control of Documented Information",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "4.3 Asset Inventory"
+      ],
+      "explanation": "The provided sections contain no content about controlling documented information to ensure availability and suitability for use. The sections only cover general purpose, scope, and asset inventory requirements.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r17",
+      "requirement_text": "The organization shall plan, implement, control, evaluate and maintain the processes needed to meet information security requirements.",
+      "requirement_section": "8.1 Operational Planning and Control",
+      "status": "partially_covered",
+      "evidence": "This policy defines Acme Corp's approach to identifying, assessing, treating, and monitoring information security risks. It ensures that risk management is systematic, consistent, and aligned with the company's strategic objectives and risk appetite.",
+      "evidence_sections": [
+        "2 Scope",
+        "1 Purpose",
+        "Definitions"
+      ],
+      "explanation": "The policy mentions systematic and consistent processes for risk management but lacks specific details on planning, implementing, controlling, evaluating and maintaining operational processes to meet information security requirements.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r18",
+      "requirement_text": "The organization shall perform information security risk assessments at planned intervals or when significant changes are proposed or occur.",
+      "requirement_section": "8.2 Information Security Risk Assessment",
+      "status": "covered",
+      "evidence": "A formal risk assessment shall be conducted annually. Additional assessments shall be triggered by significant changes to systems, processes, or the threat landscape.",
+      "evidence_sections": [
+        "4.1 Frequency",
+        "1 Purpose",
+        "2 Scope"
+      ],
+      "explanation": "The policy clearly specifies planned intervals for risk assessments (annually) and triggers for additional assessments when significant changes occur, fully addressing the requirement.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r19",
+      "requirement_text": "The organization shall implement the information security risk treatment plan.",
+      "requirement_section": "8.3 Information Security Risk Treatment",
+      "status": "partially_covered",
+      "evidence": "This policy defines Acme Corp's approach to identifying, assessing, treating, and monitoring information security risks.",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "While the purpose mentions treating risks, the provided sections lack specific details about implementing a risk treatment plan with concrete steps and processes.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r20",
+      "requirement_text": "The organization shall evaluate the information security performance and the effectiveness of the information security management system.",
+      "requirement_section": "9.1 Monitoring, Measurement, Analysis and Evaluation",
+      "status": "partially_covered",
+      "evidence": "This policy defines Acme Corp's approach to identifying, assessing, treating, and monitoring information security risks.",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The policy mentions monitoring risks but does not provide specific details on evaluating information security performance and ISMS effectiveness through measurement, analysis and evaluation processes.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r21",
+      "requirement_text": "The organization shall conduct internal audits at planned intervals to provide information on whether the ISMS conforms to the organization's own requirements and the requirements of this document.",
+      "requirement_section": "9.2.1 General",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The provided sections contain no content about conducting internal audits at planned intervals to assess ISMS conformity. The sections only cover general policy purpose, scope, and definitions.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r22",
+      "requirement_text": "The organization shall plan, establish, implement and maintain an audit programme.",
+      "requirement_section": "9.2.2 Internal Audit Programme",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "5.1 Treatment Options",
+        "5.2 Risk Treatment Plan"
+      ],
+      "explanation": "The provided sections contain no content about planning, establishing, implementing or maintaining an audit programme. The sections focus on risk treatment options and plans, not audit programmes.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r23",
+      "requirement_text": "Top management shall review the organization's information security management system at planned intervals to ensure its continuing suitability, adequacy and effectiveness.",
+      "requirement_section": "9.3.1 General",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "The provided sections contain no content about top management reviewing the ISMS at planned intervals. The sections only cover general purpose, scope, and definitions without management review requirements.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r24",
+      "requirement_text": "The management review shall include consideration of the status of actions from previous management reviews and changes in external and internal issues.",
+      "requirement_section": "9.3.2 Management Review Inputs",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "4.1 Frequency",
+        "8 Document Control"
+      ],
+      "explanation": "The child document does not contain any provisions for management review processes, consideration of previous review actions, or assessment of internal/external changes.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r25",
+      "requirement_text": "The results of the management review shall include decisions related to continual improvement opportunities and any need for changes to the ISMS.",
+      "requirement_section": "9.3.3 Management Review Results",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "4.1 Frequency",
+        "5.2 Risk Treatment Plan"
+      ],
+      "explanation": "No content addresses management review results, continual improvement decisions, or ISMS change requirements as specified in the parent requirement.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r26",
+      "requirement_text": "The organization shall continually improve the suitability, adequacy and effectiveness of the information security management system.",
+      "requirement_section": "10.1 Continual Improvement",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "1 Purpose",
+        "2 Scope",
+        "Definitions"
+      ],
+      "explanation": "While the purpose mentions systematic and consistent risk management, there is no specific provision for continually improving the ISMS's suitability, adequacy, and effectiveness.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    },
+    {
+      "req_id": "iso27001__r27",
+      "requirement_text": "When a nonconformity occurs, the organization shall react to the nonconformity and take action to control and correct it, deal with the consequences, and determine if similar nonconformities exist or could potentially occur.",
+      "requirement_section": "10.2 Nonconformity and Corrective Action",
+      "status": "not_covered",
+      "evidence": "",
+      "evidence_sections": [
+        "Definitions",
+        "2 Scope",
+        "3 Risk Appetite"
+      ],
+      "explanation": "The document does not address nonconformity management, corrective actions, or procedures for controlling and correcting nonconformities when they occur.",
+      "parent_doc_id": "iso27001",
+      "parent_doc_title": "ISO 27001:2022",
+      "child_doc_id": "risk-policy",
+      "child_doc_title": "Risk Management Policy"
+    }
+  ],
+  "summary": {
+    "total_requirements_checked": 82,
+    "by_status": {
+      "not_covered": 47,
+      "covered": 4,
+      "partially_covered": 31
+    }
+  }
+}

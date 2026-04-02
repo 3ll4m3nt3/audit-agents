@@ -1,0 +1,91 @@
+ACCESS CONTROL PROCEDURE
+
+PURPOSE
+
+This procedure defines the steps for managing user access to Acme Corp systems and
+information assets. It implements the access control requirements set out in the Company
+Information Security Policy.
+
+SCOPE
+
+This procedure applies to all IT systems, applications, and data repositories managed by
+or on behalf of Acme Corp. It covers the full lifecycle of access rights: provisioning,
+modification, review, and revocation.
+
+ROLES AND RESPONSIBILITIES
+
+IT Helpdesk is responsible for executing access provisioning and revocation requests in
+the identity management system.
+
+Line Managers are responsible for approving access requests for their direct reports and
+initiating revocation upon any change in role or departure.
+
+The Security Team is responsible for defining access control standards, conducting access
+reviews, and investigating access-related incidents.
+
+DEFINITIONS
+
+Privileged access: access granted exclusively to members of the IT Helpdesk and Security Team for managing servers and network infrastructure via the IT Service Portal
+
+Least privilege: the practice of limiting user access to only the systems required for their current role
+
+PROCEDURE
+
+PROVISIONING NEW ACCESS
+
+Step 1 - The requesting manager submits an Access Request Form via the IT Service Portal,
+specifying the user, system, role, and business justification.
+
+Step 2 - The IT Helpdesk validates the request is complete and routes it for approval.
+Requests for privileged access require additional sign-off from the Security Team.
+
+Step 3 - Upon approval, IT Helpdesk creates or modifies the account within one business
+day and notifies the manager and user.
+
+Step 4 - The IT Helpdesk records the provisioned access in the Access Rights Register.
+
+MODIFYING EXISTING ACCESS
+
+Step 1 - The manager submits a Change of Access Form for role changes, promotions, or
+transfers that require adjustment of access rights.
+
+Step 2 - IT Helpdesk removes access no longer required before granting new access rights,
+following the principle of least privilege.
+
+Step 3 - Changes are recorded in the Access Rights Register with the effective date.
+
+REVOKING ACCESS
+
+Step 1 - HR notifies IT Helpdesk of terminations no later than the employee's last day.
+For involuntary terminations, immediate revocation is required.
+
+Step 2 - IT Helpdesk disables the account and removes active sessions within two hours
+of notification for involuntary terminations, or at end of final working day for voluntary.
+
+Step 3 - IT Helpdesk confirms revocation to HR and the relevant manager in writing.
+
+Step 4 - Physical access badges and tokens are returned and deactivated.
+
+PERIODIC ACCESS REVIEWS
+
+Access rights shall be reviewed quarterly for privileged accounts and annually for all
+other accounts. Line managers receive a report of their team's access rights and must
+confirm, modify, or revoke each entry within ten business days.
+
+PRIVILEGED ACCESS MANAGEMENT
+
+Privileged accounts (administrator, root, service accounts) shall be managed via the
+Privileged Access Management (PAM) system. Shared passwords are prohibited. All
+privileged sessions must be logged and retained for a minimum of 12 months.
+
+EXCEPTIONS
+
+Exceptions to this procedure require written approval from the CISO. All exceptions are
+time-limited to a maximum of 90 days and must be recorded in the Exceptions Register.
+
+RELATED DOCUMENTS
+
+- Company Information Security Policy
+- HR Onboarding and Offboarding Procedure
+- Privileged Access Management Standard
+- Access Rights Register (IT-owned)

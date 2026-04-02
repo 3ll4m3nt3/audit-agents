@@ -1,0 +1,90 @@
+# Company Information Security Policy
+
+## 1 Purpose
+
+This policy establishes the framework for protecting the confidentiality, integrity, and
+availability of Acme Corp's information assets. It applies to all employees, contractors,
+and third parties who access company systems or data.
+
+## 2 Scope
+
+This policy covers all information assets owned, leased, or managed by Acme Corp,
+including but not limited to:
+
+- Digital data stored on company systems, cloud platforms, or removable media
+- Physical documents containing sensitive or confidential information
+- Network infrastructure, endpoints, and communication systems
+- Third-party systems that process or store company data
+
+## Definitions
+
+Information security incident: any event that has resulted in, or has the potential to result in, unauthorized access, disruption, disclosure, or misuse of information assets
+
+Privileged access: access rights that allow a user to perform functions beyond those of a standard user, including system administration, configuration changes, and access to sensitive data stores
+
+Risk appetite: the level of risk the organization is willing to accept in pursuit of its strategic objectives before action is deemed necessary
+
+## 3 Policy Statements
+
+### 3.1 Information Classification
+
+All information assets shall be classified according to their sensitivity and criticality.
+Classification levels are: Public, Internal, Confidential, and Restricted. Asset owners are
+responsible for classifying their information assets and applying appropriate controls.
+
+### 3.2 Access Control
+
+Access to information assets shall be granted on a least-privilege basis. All access rights
+shall be reviewed at least annually. User accounts shall be disabled immediately upon
+termination of employment or contract.
+
+### 3.3 Acceptable Use
+
+Company information assets shall be used for legitimate business purposes only. Personal
+use is permitted within reasonable limits provided it does not interfere with work duties
+or expose the company to legal or reputational risk.
+
+### 3.4 Password and Authentication
+
+All systems shall enforce strong authentication. Passwords must be a minimum of 12
+characters and must not be shared. Multi-factor authentication is mandatory for all
+remote access and privileged accounts.
+
+### 3.5 Incident Reporting
+
+All employees must report suspected information security incidents immediately to the
+Security team at security@acme.com or via the internal ticketing system. Failure to
+report a known incident may result in disciplinary action.
+
+## 4 Risk Management
+
+The organization shall conduct an annual information security risk assessment. Risk
+treatment decisions shall be documented and approved by the Chief Information Security
+Officer. Residual risks exceeding the risk appetite threshold require sign-off from the
+Chief Executive Officer.
+
+## 5 Compliance
+
+### 5.1 Legal and Regulatory Requirements
+
+The organization shall identify and comply with all applicable legal, regulatory, and
+contractual requirements relating to information security, including data protection laws.
+
+### 5.2 Audit and Review
+
+This policy and its associated controls shall be reviewed annually or following a
+significant security incident. Internal audits shall verify compliance with this policy.
+
+## 6 Enforcement
+
+Violations of this policy may result in disciplinary action up to and including termination
+of employment. Suspected criminal activity will be reported to relevant law enforcement
+authorities.
+
+## 7 Document Control
+
+| Version | Date       | Author          | Change Summary          |
+|---------|------------|-----------------|-------------------------|
+| 1.0     | 2023-01-15 | CISO            | Initial release         |
+| 1.1     | 2024-03-01 | CISO            | Updated MFA requirements|
+| 2.0     | 2025-09-01 | CISO            | Annual review           |

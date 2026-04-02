@@ -1,0 +1,110 @@
+# Risk Management Policy
+
+## 1 Purpose
+
+This policy defines Acme Corp's approach to identifying, assessing, treating, and
+monitoring information security risks. It ensures that risk management is systematic,
+consistent, and aligned with the company's strategic objectives and risk appetite.
+
+## 2 Scope
+
+This policy applies to all information assets, business processes, and third-party
+relationships that could expose Acme Corp to information security risk.
+
+## Definitions
+
+Risk: a potential negative outcome arising from a specific threat exploiting a vulnerability, assessed in terms of likelihood and financial impact to the organization
+
+Risk appetite: the maximum level of financial loss the organization is prepared to accept before escalating to executive leadership for treatment approval
+
+Vulnerability: a technical weakness in a system, application, or configuration that could be exploited by an attacker to gain unauthorized access
+
+## 3 Risk Appetite
+
+Acme Corp has a low tolerance for risks that could result in:
+
+- Unauthorized disclosure of customer or employee personal data
+- Disruption to critical business services exceeding four hours
+- Regulatory fines or legal liability
+- Significant reputational damage
+
+Risks scored High or Critical must be treated and reduced to Medium or below before
+acceptance. Residual risks rated Medium require CISO approval. Residual risks rated
+High or Critical require CEO approval.
+
+## 4 Risk Assessment
+
+### 4.1 Frequency
+
+A formal risk assessment shall be conducted annually. Additional assessments shall be
+triggered by significant changes to systems, processes, or the threat landscape.
+
+### 4.2 Methodology
+
+Risk assessments shall use a qualitative approach with a 5x5 likelihood-impact matrix.
+Likelihood and impact are each scored 1 (Very Low) to 5 (Very High). Risk score equals
+likelihood multiplied by impact.
+
+| Score   | Rating   |
+|---------|----------|
+| 1 - 4   | Low      |
+| 5 - 9   | Medium   |
+| 10 - 16 | High     |
+| 17 - 25 | Critical |
+
+### 4.3 Asset Inventory
+
+All in-scope information assets shall be catalogued in the Asset Register prior to risk
+assessment. Asset owners are responsible for keeping their asset records current.
+
+### 4.4 Threat and Vulnerability Identification
+
+The assessment shall identify relevant threats (e.g. malware, insider threat, natural
+disaster) and vulnerabilities (e.g. unpatched software, weak access controls) for each
+asset group.
+
+## 5 Risk Treatment
+
+### 5.1 Treatment Options
+
+For each identified risk, the asset owner shall select one of the following treatment options:
+
+- **Mitigate** — implement controls to reduce likelihood or impact
+- **Transfer** — share risk via insurance or contractual arrangements
+- **Avoid** — cease the activity that generates the risk
+- **Accept** — formally accept the residual risk within appetite
+
+### 5.2 Risk Treatment Plan
+
+Accepted treatment decisions shall be captured in a Risk Treatment Plan, which documents
+the selected option, planned controls, responsible owner, and target completion date.
+
+### 5.3 Implementation and Tracking
+
+The Security Team tracks open risk treatment items monthly. Overdue items are escalated
+to the relevant manager. Items overdue by more than 30 days are escalated to the CISO.
+
+## 6 Risk Monitoring and Reporting
+
+The risk register shall be reviewed quarterly by the Security Team and presented to the
+Security Steering Committee bi-annually. Key risk indicators shall be monitored continuously
+where tooling permits.
+
+## 7 Roles and Responsibilities
+
+The CISO owns this policy and is responsible for maintaining the risk register, overseeing
+risk assessments, and reporting to executive leadership.
+
+Asset Owners are responsible for identifying risks to their assets, selecting treatment
+options, and implementing agreed controls on time.
+
+The Security Team facilitates risk assessments, maintains the risk register, and provides
+guidance to asset owners.
+
+## 8 Document Control
+
+| Version | Date       | Author | Change Summary               |
+|---------|------------|--------|------------------------------|
+| 1.0     | 2023-06-01 | CISO   | Initial release              |
+| 1.1     | 2024-06-15 | CISO   | Updated risk appetite thresholds |
+| 2.0     | 2025-09-01 | CISO   | Annual review, new matrix    |
