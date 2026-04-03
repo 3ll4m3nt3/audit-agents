@@ -1,12 +1,11 @@
-# 🏛️ Audit Agents
+# 🏛️ Auto-audit
 
 **Automated compliance verification for governance document hierarchies.**
 
-Audit-agents automates auditing of policies, procedures, and guidelines. It automatically checks compliance across document hierarchies, detects inconsistent definitions, and analyzes writing quality using specialized AI agents.
+Auto.audit automates auditing of policies, procedures, and guidelines. It automatically checks compliance across document hierarchies, detects inconsistent definitions, and analyzes writing quality.
 
 **This is a proof of concept.**
-To see a test report vist [audit-agent-poc] (https://audit-agent-poc.tiiny.site/)
-
+To see a test report vist [auto-audit-poc] (https://audit-pipeline.tiiny.site/#summary))
 
 ![alt text](test1image.png)
 
